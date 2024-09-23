@@ -1,0 +1,68 @@
+/* CustomCalendar.css */
+
+.react-calendar {
+  border: none;
+  font-family: 'Inter', sans-serif;
+  width: 80%; /* Make calendar full width */
+}
+
+.react-calendar__tile {
+  background: #f0f0f0;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  height: 60px; /* Increase height for larger tiles */
+  width: 60px;  /* Set width for tiles */
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background: #e0e0e0;
+}
+
+.react-calendar__tile--now {
+  background: #ffeb3b;
+  border-radius: 8px;
+}
+
+.react-calendar__tile--active {
+  background: #4caf50;
+  color: white;
+  border-radius: 8px;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #388e3c;
+}
+
+.react-calendar__navigation button {
+  color: #4caf50;
+  min-width: 44px;
+  background: none;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e0e0e0;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: #d32f2f;
+}
+
+/* Enhance the info card styles */
+.ml-6 {
+  background-color: #f9fafb; /* Light background */
+  border: 1px solid #e5e7eb; /* Border color */
+}
+
+.ml-6 h2 {
+  color: #2c3e50; /* Darker text color for heading */
+}
+
+.ml-6 p {
+  margin: 0; /* Remove margin from paragraphs */
+  padding: 4px 0; /* Add padding for better spacing */
+}

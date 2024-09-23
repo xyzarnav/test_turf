@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/PrasadBelure/turf-.git/static/css/main.1837a589.css",
+    "main.js": "/PrasadBelure/turf-.git/static/js/main.7ab6f265.js",
+    "static/js/453.f3fa11fa.chunk.js": "/PrasadBelure/turf-.git/static/js/453.f3fa11fa.chunk.js",
+    "index.html": "/PrasadBelure/turf-.git/index.html",
+    "main.1837a589.css.map": "/PrasadBelure/turf-.git/static/css/main.1837a589.css.map",
+    "main.7ab6f265.js.map": "/PrasadBelure/turf-.git/static/js/main.7ab6f265.js.map",
+    "453.f3fa11fa.chunk.js.map": "/PrasadBelure/turf-.git/static/js/453.f3fa11fa.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1837a589.css",
+    "static/js/main.7ab6f265.js"
+  ]
+}

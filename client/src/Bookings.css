@@ -1,0 +1,9 @@
+.available {
+    background-color: green;
+    color: white;
+}
+
+.booked {
+    background-color: red;
+    color: white;
+}

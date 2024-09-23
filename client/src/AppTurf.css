@@ -1,0 +1,55 @@
+/* AppTurf.css */
+
+.add-turf-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.add-turf-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.add-turf-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.add-turf-container input[type="text"],
+.add-turf-container input[type="file"],
+.add-turf-container textarea {
+    width: calc(100% - 10px);
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.add-turf-container .checkbox-group label {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    display: inline-block;
+    align-content: space-between;
+    
+}
+
+.add-turf-container button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.add-turf-container button:hover {
+    background-color: #0056b3;
+}
