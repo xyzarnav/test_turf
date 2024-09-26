@@ -15,6 +15,7 @@ const BookingPage = () => {
   const [paymentProof, setPaymentProof] = useState(null);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
   const [bookedSlots, setBookedSlots] = useState([]);
+  const [methodOfBooking, setMethodOfBooking] = useState("online");
 
   useEffect(() => {
     const turfId = localStorage.getItem("selectedTurfId");
@@ -60,6 +61,7 @@ const BookingPage = () => {
     formData.append("paymentProof", paymentProof);
     formData.append("numberOfPeople", numberOfPeople);
     formData.append("turfId", turf.id);
+    formData.append("method_of_booking", methodOfBooking);
 
     axios
       .post("http://localhost:3001/bookings", formData)
@@ -74,6 +76,7 @@ const BookingPage = () => {
         setSelectedTime("");
         setPaymentProof(null);
         setNumberOfPeople(1);
+        setMethodOfBooking("online");
       })
       .catch((error) => console.error("Error making booking:", error));
   };
@@ -81,6 +84,10 @@ const BookingPage = () => {
   const handlePaymentProofChange = (event) => {
     const file = event.target.files[0];
     setPaymentProof(file);
+  };
+
+  const handleMethodOfBookingChange = (e) => {
+    setMethodOfBooking(e.target.value); // Update to set single value
   };
 
   const renderAvailabilityGrid = () => {
@@ -201,6 +208,49 @@ const BookingPage = () => {
                   ) : null;
                 })}
               </select>
+
+              <div className="mt-4">
+                <label className="font-semibold">Method of Booking:</label>
+                <div>
+                  <input
+                    type="radio"
+                    id="online"
+                    name="method_of_booking"
+                    value="online"
+                    checked={methodOfBooking === "online"}
+                    onChange={(e) => setMethodOfBooking(e.target.value)}
+                  />
+                  <label htmlFor="online" className="ml-2">
+                    Online
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="in_person"
+                    name="method_of_booking"
+                    value="in_person"
+                    checked={methodOfBooking === "in_person"}
+                    onChange={(e) => setMethodOfBooking(e.target.value)}
+                  />
+                  <label htmlFor="in_person" className="ml-2">
+                    In Person
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    id="combine"
+                    name="method_of_booking"
+                    value="combine"
+                    checked={methodOfBooking === "combine"}
+                    onChange={(e) => setMethodOfBooking(e.target.value)}
+                  />
+                  <label htmlFor="combine" className="ml-2">
+                    Combine
+                  </label>
+                </div>
+              </div>
 
               <label htmlFor="paymentProof" className="font-semibold">
                 Payment Proof (Image):
