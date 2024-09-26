@@ -30,8 +30,10 @@ CREATE TABLE bookings (
     numberOfPeople INT NOT NULL,
     turf_id INT NOT NULL,  -- Foreign key to the turf being booked
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    method_of_booking ENUM('online', 'in_person', 'combine') DEFAULT 'online',
     FOREIGN KEY (turf_id) REFERENCES turfs(id)
-);
+) AUTO_INCREMENT = 1023;
+
 
 
 
