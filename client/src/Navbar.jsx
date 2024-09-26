@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Space } from "antd";
 
@@ -7,6 +7,16 @@ const url =
   "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear user session or token
+    localStorage.removeItem("userToken"); // Example: remove token from localStorage
+
+    // Redirect to the home page or login page
+    navigate("/");
+  };
+
   return (
     <nav className="bg-gray-800 bg-opacity-75 p-4 shadow-lg border-b border-gray-700">
       <div className="container mx-auto flex justify-between items-center">
@@ -46,10 +56,10 @@ const Navbar = () => {
             </li>
             <li className="navitem">
               <Link
-                to="/Calendar"
+                to="/calendar"
                 className="text-white hover:text-gray-300 transition duration-300"
               >
-                Calender
+                Calendar
               </Link>
             </li>
             <li className="navitem">
@@ -77,6 +87,13 @@ const Navbar = () => {
               </Space>
             </div>
           </Link>
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="text-white hover:text-gray-300 transition duration-300"
+          >
+            Logout
+          </button>
         </div>
       </div>
     </nav>

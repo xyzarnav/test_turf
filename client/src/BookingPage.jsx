@@ -48,7 +48,7 @@ const BookingPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!paymentProof) {
+    if (methodOfBooking !== "in_person" && !paymentProof) {
       console.error("Please select payment proof");
       return;
     }
@@ -261,7 +261,7 @@ const BookingPage = () => {
                 name="paymentProof"
                 onChange={handlePaymentProofChange}
                 className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                required={methodOfBooking !== "in_person"}
                 accept="image/*"
               />
 

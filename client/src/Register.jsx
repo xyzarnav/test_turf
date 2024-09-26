@@ -8,6 +8,7 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [dateOfBirth, setDateOfBirth] = useState('');
     const [gender, setGender] = useState('');
+    const [wallet, setWallet] = useState(""); 
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
@@ -35,7 +36,7 @@ const RegisterPage = () => {
                 alert('Registration successful!');
 
                 // Redirect to login page
-                navigate('/login');
+                navigate('/');
             } else {
                 // Display error message
                 setErrorMessage('Failed to register. Please try again.');
@@ -48,64 +49,80 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="register-page">
-            <div className="login-content"> {/* Use the same class name as in the login page */}
-                <div className="register-form">
-                    <h2>Register</h2>
-                    <form onSubmit={handleRegister}>
-                        <label htmlFor="name">Full Name</label>
-                        <input
-                            type="text"
-                            id="name"
-                            placeholder="Full Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="dateOfBirth">Date of Birth</label>
-                        <input
-                            type="date"
-                            id="dateOfBirth"
-                            value={dateOfBirth}
-                            onChange={(e) => setDateOfBirth(e.target.value)}
-                            required
-                        />
-                        <label htmlFor="gender">Gender</label>
-                        <select
-                            id="gender"
-                            value={gender}
-                            onChange={(e) => setGender(e.target.value)}
-                            required
-                        >
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                        <button type="submit">Register</button>
-                    </form>
-                    {errorMessage && <p className="error-message">{errorMessage}</p>}
-                    <p>Already have an account? <a href="/">Login</a></p>
-                </div>
-            </div>
+      <div className="register-page">
+        <div className="login-content">
+          {" "}
+          {/* Use the same class name as in the login page */}
+          <div className="register-form">
+            <h2>Register</h2>
+            <form onSubmit={handleRegister}>
+              <label htmlFor="name">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <label htmlFor="wallet">Wallet</label>
+              <input
+                type="number"
+                id="wallet"
+                placeholder="Add Money Rupee"
+                value={wallet}
+                onChange={(e) => setWallet(e.target.value)}
+                min="100"
+                step="10"
+                required
+              />
+              <label htmlFor="dateOfBirth">Date of Birth</label>
+              <input
+                type="date"
+                id="dateOfBirth"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                required
+              />
+              <label htmlFor="gender">Gender</label>
+              <select
+                id="gender"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <button type="submit">Register</button>
+            </form>
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <p>
+              Already have an account? <a href="/">Login</a>
+            </p>
+          </div>
         </div>
+      </div>
     );
 };
 
