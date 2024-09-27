@@ -89,10 +89,18 @@ app.post("/register", (req, res) => {
       console.error("Error registering user:", err);
       return res.status(500).json({ error: "Failed to register user" });
     }
-    console.log("User registered successfully");
-    return res.status(200).json({ message: "User registered successfully" });
+
+    // Retrieve the insertId, which is the UserID of the newly registered user
+    const user_id = result.insertId;
+
+    console.log("User registered successfully with ID:", user_id);
+    return res.status(200).json({
+      message: "User registered successfully",
+      user_id: user_id, // Return the UserID to the frontend
+    });
   });
 });
+
 
 // Get turf by ID
 app.get("/turfs/:id", (req, res) => {
@@ -255,6 +263,98 @@ app.get("/areas", (req, res) => {
 app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
+
+
+
+const stripe = require("stripe")(
+  "sk_test_51Q3JV201cMS3vICJu3SgShx91j1BASqCarunkfHZrDqLoXYie5ffG9fkFwJnTUoxixQDIgc9v2J3hQv8ingae1FK00TOU7X0Vk"
+);
+
+
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { amount } = req.body; // amount in rupees
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100, // Stripe uses smallest currency unit (paise)
+      currency: "inr",
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
+
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+
+app.post("/update-wallet", (req, res) => {
+  const { user_id, amount } = req.body;
+
+  console.log("Received update-wallet request:", { user_id, amount });
+
+  // Query to check if the wallet exists for the user
+  const checkWalletQuery = "SELECT balance FROM wallet WHERE user_id = ?";
+
+  db.query(checkWalletQuery, [user_id], (err, result) => {
+    if (err) {
+      console.error("Error fetching wallet:", err);
+      return res.status(500).json({ error: "Error fetching wallet" });
+    }
+ 
+    if (result.length > 0) {
+      // Wallet exists, update balance
+      const newBalance = parseFloat(result[0].balance) + parseFloat(amount);
+      const updateQuery = "UPDATE wallet SET balance = ? WHERE user_id = ?";
+
+      console.log("Updating wallet balance:", { newBalance, user_id });
+
+      db.query(updateQuery, [newBalance, user_id], (err, updateResult) => {
+        if (err) {
+          console.error("Error updating wallet:", err);
+          return res.status(500).json({ error: "Error updating wallet" });
+        }
+        console.log("Wallet updated successfully");
+        return res
+          .status(200)
+          .json({
+            message: "Wallet updated successfully",
+            balance: newBalance,
+          });
+      });
+    } else {
+      // Wallet doesn't exist, insert new record
+      const insertQuery = "INSERT INTO wallet (user_id, balance) VALUES (?, ?)";
+
+      console.log("Inserting new wallet for user:", { user_id, amount });
+
+      db.query(insertQuery, [user_id, amount], (err, insertResult) => {
+        if (err) {
+          console.error("Error inserting wallet:", err);
+          return res.status(500).json({ error: "Error inserting wallet" });
+        }
+        console.log("Wallet created and updated successfully");
+        return res
+          .status(200)
+          .json({
+            message: "Wallet created and updated successfully",
+            balance: amount,
+          });
+      });
+    }
+  });
+});
+
+
+
+
+  
+
 
 // Export the db object
 module.exports = { db };

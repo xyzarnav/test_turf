@@ -1,129 +1,172 @@
-import React, { useState } from 'react';
-import './Register.css'; // Import your custom CSS file
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "./Register.css"; // Import your custom CSS file
+import { useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+
+// Initialize Stripe
+const stripePromise = loadStripe(
+  "pk_test_51Q3JV201cMS3vICJOLyDFs0E2ePeOqoN0IzyFQqlzrbR7ln2BZDkirQW3Jp8Xc6gRmX0r4unuD4pIqPuBpclhgfV00y9FZEUE4"
+);
 
 const RegisterPage = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
-    const [gender, setGender] = useState('');
-    const [wallet, setWallet] = useState(""); 
-    const [errorMessage, setErrorMessage] = useState('');
-    const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [gender, setGender] = useState("");
+  const [wallet, setWallet] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
-    const handleRegister = (e) => {
-        e.preventDefault();
+  const stripe = useStripe();
+  const elements = useElements();
 
-        fetch('http://localhost:3001/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    const registrationResponse = await fetch("http://localhost:3001/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
+    }).then((res) => res.json());
+
+    console.log("Registration response:", registrationResponse);
+
+    if (registrationResponse.message === "User registered successfully") {
+      alert("Registration successful!");
+
+      if (stripe && elements) {
+        const { clientSecret } = await fetch(
+          "http://localhost:3001/create-payment-intent",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: wallet }),
+          }
+        ).then((res) => res.json());
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(
+          clientSecret,
+          {
+            payment_method: {
+              card: elements.getElement(CardElement),
             },
-            body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'User registered successfully') {
-                // Clear input fields
-                setName('');
-                setEmail('');
-                setPassword('');
-                setDateOfBirth('');
-                setGender('');
+          }
+        );
 
-                // Display success alert
-                alert('Registration successful!');
+        if (error) {
+          setErrorMessage(error.message);
+        } else if (paymentIntent.status === "succeeded") {
+          alert("Payment successful!");
 
-                // Redirect to login page
-                navigate('/');
-            } else {
-                // Display error message
-                setErrorMessage('Failed to register. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.log('Error registering user:', error);
-            setErrorMessage('An error occurred. Please try again later.');
-        });
-    };
+          console.log("Sending wallet update request...", {
+            user_id: registrationResponse.user_id, // Ensure user_id is logged here
+            amount: wallet,
+          });
 
-    return (
-      <div className="register-page">
-        <div className="login-content">
-          {" "}
-          {/* Use the same class name as in the login page */}
-          <div className="register-form">
-            <h2>Register</h2>
-            <form onSubmit={handleRegister}>
-              <label htmlFor="name">Full Name</label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Full Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+          // Update the wallet balance
+          await fetch("http://localhost:3001/update-wallet", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: registrationResponse.user_id, // Send user_id from registration response
+              amount: wallet,
+            }),
+          });
 
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <label htmlFor="wallet">Wallet</label>
-              <input
-                type="number"
-                id="wallet"
-                placeholder="Add Money Rupee"
-                value={wallet}
-                onChange={(e) => setWallet(e.target.value)}
-                min="100"
-                step="10"
-                required
-              />
-              <label htmlFor="dateOfBirth">Date of Birth</label>
-              <input
-                type="date"
-                id="dateOfBirth"
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
-                required
-              />
-              <label htmlFor="gender">Gender</label>
-              <select
-                id="gender"
-                value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                required
-              >
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-              <button type="submit">Register</button>
-            </form>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
-            <p>
-              Already have an account? <a href="/">Login</a>
-            </p>
-          </div>
-        </div>
+          navigate("/");
+        }
+      }
+    } else {
+      setErrorMessage("Registration failed.");
+    }
+  };
+
+  return (
+    <div className="register-page">
+      <div className="register-form">
+        <h2>Register</h2>
+        <form onSubmit={handleRegister}>
+          {/* Existing registration fields */}
+          <label htmlFor="name">Full Name</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <label htmlFor="wallet">Wallet (Add Money)</label>
+          <input
+            type="number"
+            value={wallet}
+            onChange={(e) => setWallet(e.target.value)}
+            min="100"
+            step="10"
+            required
+          />
+
+          <label htmlFor="dateOfBirth">Date of Birth</label>
+          <input
+            type="date"
+            value={dateOfBirth}
+            onChange={(e) => setDateOfBirth(e.target.value)}
+            required
+          />
+
+          <label htmlFor="gender">Gender</label>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            required
+          >
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+
+          {/* Stripe Card Element */}
+          <label htmlFor="card">Card Details</label>
+          <CardElement />
+
+          {/* Submit button */}
+          <button type="submit">Register & Pay</button>
+
+          {/* Error message */}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </form>
       </div>
-    );
+    </div>
+  );
 };
 
-export default RegisterPage;
+// Wrap the component in Elements for Stripe
+const RegisterPageWrapper = () => (
+  <Elements stripe={stripePromise}>
+    <RegisterPage />
+  </Elements>
+);
+
+export default RegisterPageWrapper;
