@@ -77,32 +77,42 @@ app.post("/login", (req, res) => {
   });
 });
 
-// Registration endpoint
-app.post("/register", (req, res) => {
-  const { name, email, password, dateOfBirth, gender } = req.body;
-  const sql =
-    "INSERT INTO userprofile (FullName, Email, Password, DateOfBirth, Gender) VALUES (?, ?, ?, ?, ?)";
-  const values = [name, email, password, dateOfBirth, gender];
 
-  db.query(sql, values, (err, result) => {
-    if (err) {
-      console.error("Error registering user:", err);
-      return res.status(500).json({ error: "Failed to register user" });
-    }
-
-    // Retrieve the insertId, which is the UserID of the newly registered user
-    const user_id = result.insertId;
-
-    console.log("User registered successfully with ID:", user_id);
-    return res.status(200).json({
-      message: "User registered successfully",
-      user_id: user_id, // Return the UserID to the frontend
-    });
-  });
-});
-
-// 
 const bcrypt = require("bcrypt");
+
+app.post("/register", async (req, res) => {
+  const { name, email, password, dateOfBirth, gender } = req.body;
+
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const sql =
+      "INSERT INTO userprofile (FullName, Email, Password, DateOfBirth, Gender) VALUES (?, ?, ?, ?, ?)";
+    const values = [name, email, hashedPassword, dateOfBirth, gender];
+
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Error registering user:", err);
+        return res.status(500).json({ error: "Failed to register user" });
+      }
+
+      // Retrieve the insertId, which is the UserID of the newly registered user
+      const user_id = result.insertId;
+
+      console.log("User registered successfully with ID:", user_id);
+      return res.status(200).json({
+        message: "User registered successfully",
+        user_id: user_id, // Return the UserID to the frontend
+      });
+    });
+  } catch (err) {
+    console.error("Error hashing password:", err);
+    return res.status(500).json({ error: "Failed to register user" });
+  }
+});
+// 
+
 
 // Admin Signup Endpoint
 app.post("/admin/signup", async (req, res) => {

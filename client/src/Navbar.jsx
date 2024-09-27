@@ -57,6 +57,16 @@ const Navbar = () => {
                 </Link>
               </li>
             )}
+            {isAdmin && (
+              <li className="navitem">
+                <Link
+                  to="/Dashboard"
+                  className="text-white hover:text-gray-300 transition duration-300"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
             <li className="navitem">
               <Link
                 to="/calendar"
