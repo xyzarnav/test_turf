@@ -3,15 +3,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Space } from "antd";
 
-const url =
-  "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg";
-
 const Navbar = () => {
   const navigate = useNavigate();
 
+  // Get admin status from localStorage
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+
   const handleLogout = () => {
     // Clear user session or token
-    localStorage.removeItem("userToken"); // Example: remove token from localStorage
+    localStorage.removeItem("userToken"); // Remove user token
+    localStorage.removeItem("isAdmin"); // Remove admin status
 
     // Redirect to the home page or login page
     navigate("/");
@@ -46,14 +47,16 @@ const Navbar = () => {
                 About
               </Link>
             </li>
-            <li className="navitem">
-              <Link
-                to="/contact"
-                className="text-white hover:text-gray-300 transition duration-300"
-              >
-                Contact
-              </Link>
-            </li>
+            {!isAdmin && (
+              <li className="navitem">
+                <Link
+                  to="/contact"
+                  className="text-white hover:text-gray-300 transition duration-300"
+                >
+                  Contact
+                </Link>
+              </li>
+            )}
             <li className="navitem">
               <Link
                 to="/calendar"
@@ -62,14 +65,19 @@ const Navbar = () => {
                 Calendar
               </Link>
             </li>
-            <li className="navitem">
-              <Link
-                to="/addturf"
-                className="text-white hover:text-gray-300 transition duration-300"
-              >
-                Add Turf
-              </Link>
-            </li>
+
+            {/* Conditionally render Add Turf if the user is an admin */}
+            {isAdmin && (
+              <li className="navitem">
+                <Link
+                  to="/addturf"
+                  className="text-white hover:text-gray-300 transition duration-300"
+                >
+                  Add Turf
+                </Link>
+              </li>
+            )}
+
             <li className="navitem">
               <Link
                 to="/bookingwindow"
@@ -87,6 +95,7 @@ const Navbar = () => {
               </Space>
             </div>
           </Link>
+
           {/* Logout Button */}
           <button
             onClick={handleLogout}

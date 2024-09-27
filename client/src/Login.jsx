@@ -15,7 +15,7 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:3001/login", {
+   const loginResponse = fetch("http://localhost:3001/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,6 +29,8 @@ const LoginPage = () => {
           setEmail("");
           setPassword("");
           alert("Login successful!");
+           localStorage.setItem("isAdmin", "false");
+           localStorage.setItem("userToken", loginResponse.token);
           navigate("/home");
         } else {
           setErrorMessage("Invalid email or password");
@@ -42,7 +44,7 @@ const LoginPage = () => {
 const handleAdminLogin = (e) => {
   e.preventDefault();
 
-  fetch("http://localhost:3001/admin/login", {
+   const loginResponse = fetch("http://localhost:3001/admin/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -58,6 +60,8 @@ const handleAdminLogin = (e) => {
         localStorage.setItem("AdminID", data.admin.AdminID);
         setAdminEmail("");
         setAdminPassword("");
+        localStorage.setItem("isAdmin", "true");
+        localStorage.setItem("userToken", loginResponse.token);
         alert("Admin login successful!");
         navigate("/home");
       } else {
