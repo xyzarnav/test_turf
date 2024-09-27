@@ -12,6 +12,7 @@ import AddTurf from './AddTurf';
 import Bookings from './Bookings'; 
 import Demo from './Demo';
 import Calender from './Calender';
+import Adminregisteration from "./adminregistration";
 import BookingWindow from './bookingWindow'; // Correct the import statement
 
 // import axios from 'axios'
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="/Calendar" element={<Calender />} />
+          <Route path="/register_admin" element={<Adminregisteration />} />
         </Routes>
       </BrowserRouter>
     );

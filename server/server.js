@@ -101,6 +101,71 @@ app.post("/register", (req, res) => {
   });
 });
 
+// 
+const bcrypt = require("bcrypt");
+
+// Admin Signup Endpoint
+app.post("/admin/signup", async (req, res) => {
+  const { FullName, Email, Password, Role } = req.body;
+
+  // Check if the admin already exists
+  const sqlCheck = "SELECT * FROM admin WHERE Email = ?";
+  db.query(sqlCheck, [Email], async (err, result) => {
+    if (err) {
+      console.error("Error checking admin:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    if (result.length > 0) {
+      return res.status(400).json({ error: "Admin already exists" });
+    }
+
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(Password, 10);
+
+    const sql =
+      "INSERT INTO admin (FullName, Email, Password, Role) VALUES (?, ?, ?, ?)";
+    db.query(sql, [FullName, Email, hashedPassword, Role], (err, result) => {
+      if (err) {
+        console.error("Error registering admin:", err);
+        return res.status(500).json({ error: "Failed to register admin" });
+      }
+      console.log("Admin registered successfully");
+      return res.status(200).json({ message: "Admin registered successfully" });
+    });
+  });
+});
+
+// Admin Login Endpoint
+// Admin Login Endpoint
+app.post("/admin/login", (req, res) => {
+  const { Email, Password } = req.body; // Ensure these keys match exactly
+
+  console.log("Admin login attempt:", { Email, Password }); // For debugging
+
+  const sql = "SELECT * FROM admin WHERE Email = ?"; // SQL query to check email
+
+  db.query(sql, [Email], async (err, result) => {
+    if (err) {
+      console.error("Error logging in:", err);
+      return res.status(500).json({ error: "Internal server error" });
+    }
+    if (result.length === 0) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const admin = result[0];
+    const validPassword = await bcrypt.compare(Password, admin.Password);
+
+    if (!validPassword) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    return res.status(200).json({ message: "Admin login successful", admin });
+  });
+});
+
+
+
 
 // Get turf by ID
 app.get("/turfs/:id", (req, res) => {
