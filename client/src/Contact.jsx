@@ -40,7 +40,7 @@ const ContactUs = () => {
                     <QuestionCircleFilled style={{ fontSize: '48px', marginBottom: '20px' }} /> {/* Icon */}
                     <h2 id='letstalk'>Let's Talk</h2> {/* Heading */}
                     <p> <a href='#'>bookmyturf@gmail.com</a></p> {/* Gmail Address */}
-                    <p>Vivekanand College of Eng</p> {/* Physical Address */}
+                    <p>Vivekanand College of Engineering</p> {/* Physical Address */}
                     <p>+9090909090</p>
                 </div>
                 <div className="right-container">
