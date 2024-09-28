@@ -15,6 +15,7 @@ import Calender from './Calender';
 import Dashboard from './admin/admindashboard';
 import Adminregisteration from "./adminregistration";
 import { ToastContainer } from "react-toastify";
+// import "antd/dist/antd.css"; 
 import BookingWindow from './bookingWindow'; // Correct the import statement
 
 // import axios from 'axios'

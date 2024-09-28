@@ -4,6 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import { Form, Input, Button, Select, DatePicker, InputNumber } from "antd";
+// import {
+//   PhoneOutlined,
+//   MailOutlined,
+//   UserOutlined,
+//   LockOutlined,
+//   WalletOutlined,
+// } from "@ant-design/icons";
+// import "antd/dist/antd.css";
+
+
 import Modal from "react-modal";
 
 import {
@@ -28,6 +39,7 @@ const RegisterPage = () => {
   const [wallet, setWallet] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [contact, setContact] = useState("");
   const navigate = useNavigate();
 
   const stripe = useStripe();
@@ -39,7 +51,14 @@ const RegisterPage = () => {
     const registrationResponse = await fetch("http://localhost:3001/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        dateOfBirth,
+        gender,
+        contact,
+      }),
     }).then((res) => res.json());
 
     console.log("Registration response:", registrationResponse);
@@ -53,6 +72,7 @@ const RegisterPage = () => {
   };
 
   const handlePayment = async () => {
+    toast.info("Payment processing...");
     if (stripe && elements) {
       const { clientSecret } = await fetch(
         "http://localhost:3001/create-payment-intent",
