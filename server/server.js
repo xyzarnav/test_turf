@@ -230,6 +230,16 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
   });
 });
 
+app.get("/users", (req, res) => {
+  const sql = "SELECT * FROM userprofile";
+  db.query(sql, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to fetch users" });
+    }
+    res.status(200).json(result);
+  });
+});
+
 app.get("/turfs/:turfId", (req, res) => {
   const turfId = req.params.turfId;
   const sql = "SELECT * FROM turfs WHERE id = ?";

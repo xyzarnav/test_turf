@@ -12,8 +12,9 @@ import AddTurf from './AddTurf';
 import Bookings from './Bookings'; 
 import Demo from './Demo';
 import Calender from './Calender';
-import Dashboard from './admindashboard';
+import Dashboard from './admin/admindashboard';
 import Adminregisteration from "./adminregistration";
+import { ToastContainer } from "react-toastify";
 import BookingWindow from './bookingWindow'; // Correct the import statement
 
 // import axios from 'axios'
@@ -33,6 +34,7 @@ const App = () => {
 
     return (
       <BrowserRouter>
+        <ToastContainer position="top-center" />
         <Routes>
           <Route path="/home" element={<HomePage />} />
           <Route path="/bookingwindow" element={<BookingWindow />} />

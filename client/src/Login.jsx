@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import logo from "./path/to/your/logo.png"; // Update the path to your logo
 import "./Login.css"; // If you have custom styles
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ const LoginPage = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
-   const loginResponse = fetch("http://localhost:3001/login", {
+    const loginResponse = fetch("http://localhost:3001/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,9 +29,9 @@ const LoginPage = () => {
           localStorage.setItem("UserID", data.user.UserID);
           setEmail("");
           setPassword("");
-          alert("Login successful!");
-           localStorage.setItem("isAdmin", "false");
-           localStorage.setItem("userToken", loginResponse.token);
+          toast.success("Login successful!");
+          localStorage.setItem("isAdmin", "false");
+          localStorage.setItem("userToken", loginResponse.token);
           navigate("/home");
         } else {
           setErrorMessage("Invalid email or password");
@@ -41,39 +42,38 @@ const LoginPage = () => {
         setErrorMessage("An error occurred. Please try again later.");
       });
   };
-const handleAdminLogin = (e) => {
-  e.preventDefault();
+  const handleAdminLogin = (e) => {
+    e.preventDefault();
 
-   const loginResponse = fetch("http://localhost:3001/admin/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      Email: adminEmail, // Ensure this key matches exactly
-      Password: adminPassword, // Ensure this key matches exactly
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.message === "Admin login successful") {
-        localStorage.setItem("AdminID", data.admin.AdminID);
-        setAdminEmail("");
-        setAdminPassword("");
-        localStorage.setItem("isAdmin", "true");
-        localStorage.setItem("userToken", loginResponse.token);
-        alert("Admin login successful!");
-        navigate("/home");
-      } else {
-        setErrorMessage("Invalid admin email or password");
-      }
+    const loginResponse = fetch("http://localhost:3001/admin/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        Email: adminEmail, // Ensure this key matches exactly
+        Password: adminPassword, // Ensure this key matches exactly
+      }),
     })
-    .catch((error) => {
-      console.error("Error logging in:", error);
-      setErrorMessage("An error occurred. Please try again later.");
-    });
-};
-
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === "Admin login successful") {
+          localStorage.setItem("AdminID", data.admin.AdminID);
+          setAdminEmail("");
+          setAdminPassword("");
+          localStorage.setItem("isAdmin", "true");
+          localStorage.setItem("userToken", loginResponse.token);
+          toast.success("Admin login successful!");
+          navigate("/home");
+        } else {
+          setErrorMessage("Invalid admin email or password");
+        }
+      })
+      .catch((error) => {
+        console.error("Error logging in:", error);
+        setErrorMessage("An error occurred. Please try again later.");
+      });
+  };
 
   return (
     <div

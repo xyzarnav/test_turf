@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "./Register.css"; // Import your custom CSS file
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import {
   Elements,
   CardElement,
@@ -29,7 +32,7 @@ const RegisterPage = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    // toast.configure();
     const registrationResponse = await fetch("http://localhost:3001/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,7 +42,7 @@ const RegisterPage = () => {
     console.log("Registration response:", registrationResponse);
 
     if (registrationResponse.message === "User registered successfully") {
-      alert("Registration successful!");
+      toast.success("Registration successful!");
 
       if (stripe && elements) {
         const { clientSecret } = await fetch(
@@ -63,7 +66,7 @@ const RegisterPage = () => {
         if (error) {
           setErrorMessage(error.message);
         } else if (paymentIntent.status === "succeeded") {
-          alert("Payment successful!");
+          toast.success("Payment successful!");
 
           console.log("Sending wallet update request...", {
             user_id: registrationResponse.user_id, // Ensure user_id is logged here
@@ -84,7 +87,7 @@ const RegisterPage = () => {
         }
       }
     } else {
-      setErrorMessage("Registration failed.");
+      toast.error("Registration failed. Please try again.");
     }
   };
 
