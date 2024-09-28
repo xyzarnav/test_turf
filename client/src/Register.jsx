@@ -32,10 +32,10 @@ const RegisterPage = () => {
                 setGender('');
 
                 // Display success alert
-                alert('Registration successful!');
+                // alert('Registration successful!');
 
                 // Redirect to login page
-                navigate('/login');
+                navigate('/');
             } else {
                 // Display error message
                 setErrorMessage('Failed to register. Please try again.');

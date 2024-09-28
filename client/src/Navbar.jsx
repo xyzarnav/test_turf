@@ -15,7 +15,7 @@ const Navbar = () => {
           id="sitetitle"
           className="text-white text-3xl font-bold hover:text-gray-300 transition duration-300"
         >
-          Book My Turf
+          TurfIt
         </Link>
 
         <div className="flex items-center space-x-4">

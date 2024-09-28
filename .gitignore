@@ -35,3 +35,5 @@ Thumbs.db
 coverage/
 *.tgz
 *.lock
+
+uploads/

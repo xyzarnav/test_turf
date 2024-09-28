@@ -85,7 +85,7 @@ const HomePage = () => {
         />
         <div className="relative z-10 p-10 flex flex-col items-center justify-center h-full bg-black bg-opacity-50">
           <h1 className="text-5xl sm:text-7xl font-bold text-center">
-            Welcome to Turf Booking
+            Welcome to TurfIt
           </h1>
           <h2 className="mt-4 text-3xl font-medium">Find Your Perfect Turf</h2>
         </div>
