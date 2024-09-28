@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "react-modal";
 
 import {
   Elements,
@@ -25,71 +26,80 @@ const RegisterPage = () => {
   const [gender, setGender] = useState("");
   const [wallet, setWallet] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const stripe = useStripe();
   const elements = useElements();
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    // toast.configure();
-    const registrationResponse = await fetch("http://localhost:3001/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
-    }).then((res) => res.json());
+ const handleRegister = async (e) => {
+   e.preventDefault();
 
-    console.log("Registration response:", registrationResponse);
+   const registrationResponse = await fetch("http://localhost:3001/register", {
+     method: "POST",
+     headers: { "Content-Type": "application/json" },
+     body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
+   }).then((res) => res.json());
 
-    if (registrationResponse.message === "User registered successfully") {
-      toast.success("Registration successful!");
+   console.log("Registration response:", registrationResponse);
 
-      if (stripe && elements) {
-        const { clientSecret } = await fetch(
-          "http://localhost:3001/create-payment-intent",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: wallet }),
-          }
-        ).then((res) => res.json());
+   if (registrationResponse.message === "User registered successfully") {
+     // Instead of showing the toast here, open the modal for payment
+     setModalIsOpen(true); // Open the modal for payment input
+   } else {
+     toast.error("Registration failed. Please try again.");
+   }
+ };
 
-        const { error, paymentIntent } = await stripe.confirmCardPayment(
-          clientSecret,
-          {
-            payment_method: {
-              card: elements.getElement(CardElement),
-            },
-          }
-        );
+ const handlePayment = async () => {
+   if (stripe && elements) {
+     const { clientSecret } = await fetch(
+       "http://localhost:3001/create-payment-intent",
+       {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({ amount: wallet }),
+       }
+     ).then((res) => res.json());
 
-        if (error) {
-          setErrorMessage(error.message);
-        } else if (paymentIntent.status === "succeeded") {
-          toast.success("Payment successful!");
+     const { error, paymentIntent } = await stripe.confirmCardPayment(
+       clientSecret,
+       {
+         payment_method: {
+           card: elements.getElement(CardElement),
+         },
+       }
+     );
 
-          console.log("Sending wallet update request...", {
-            user_id: registrationResponse.user_id, // Ensure user_id is logged here
-            amount: wallet,
-          });
+     if (error) {
+       setErrorMessage(error.message);
+     } else if (paymentIntent.status === "succeeded") {
+      const registrationResponse = await fetch("http://localhost:3001/register", {
+     method: "POST",
+     headers: { "Content-Type": "application/json" },
+     body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
+   }).then((res) => res.json());
+       // Payment succeeded
+       toast.success("Payment successful!");
 
-          // Update the wallet balance
-          await fetch("http://localhost:3001/update-wallet", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              user_id: registrationResponse.user_id, // Send user_id from registration response
-              amount: wallet,
-            }),
-          });
+       // Now update the wallet balance
+       await fetch("http://localhost:3001/update-wallet", {
+         method: "POST",
+         headers: { "Content-Type": "application/json" },
+         body: JSON.stringify({
+           user_id: registrationResponse.user_id, // Send user_id from registration response
+           amount: wallet,
+         }),
+       });
 
-          navigate("/");
-        }
-      }
-    } else {
-      toast.error("Registration failed. Please try again.");
-    }
-  };
+       // Now that both registration and payment are complete, show the success toast for registration
+       toast.success("Registration and payment complete!");
+
+       navigate("/");
+     }
+   }
+ };
+
 
   return (
     <div className="register-page">
@@ -150,10 +160,6 @@ const RegisterPage = () => {
             <option value="Female">Female</option>
           </select>
 
-          {/* Stripe Card Element */}
-          <label htmlFor="card">Card Details</label>
-          <CardElement />
-
           {/* Submit button */}
           <button type="submit">Register & Pay</button>
 
@@ -161,6 +167,98 @@ const RegisterPage = () => {
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
       </div>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={{
+          content: {
+            width: "350px",
+            height: "450px",
+            margin: "auto",
+            backgroundColor: "white",
+            color: "black",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+            borderRadius: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Adds a subtle shadow
+            padding: "20px",
+          },
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)", // Dim the background
+          },
+        }}
+      >
+        {/* Payment Logo Section */}
+        <div
+          className="flex justify-center items-center mb-4 p-4"
+          style={{
+            border: "2px solid black", // Border around the logos
+            borderRadius: "10px", // Rounded corners
+            backgroundColor: "rgba(0, 0, 0, 0.08)", // Slight background for contrast
+          }}
+        >
+          <img
+            src="https://logos-world.net/wp-content/uploads/2021/03/Stripe-Logo.png"
+            alt="Stripe Logo"
+            style={{ width: "100px", marginRight: "40px" }}
+          />
+          <img
+            src="https://www.urbantool.com/wp-content/uploads/2016/12/paypal-logo-png-416x111.png"
+            alt="PayPal Logo"
+            style={{ width: "130px" }}
+          />
+        </div>
+
+        {/* Card Input */}
+        <div className="w-full mb-6">
+          <label
+            htmlFor="card-element"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Credit or Debit Card
+          </label>
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: "16px",
+                  color: "#424770",
+                  "::placeholder": {
+                    color: "#aab7c4",
+                  },
+                },
+                invalid: {
+                  color: "#9e2146",
+                },
+              },
+            }}
+            className="bg-gray-100 p-3 rounded"
+          />
+        </div>
+
+        {/* Buttons Section */}
+        <div className="w-full flex justify-between">
+          <button
+            onClick={handlePayment}
+            className="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Pay Now
+          </button>
+          <button
+            onClick={() => setModalIsOpen(false)}
+            className="bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition-colors"
+          >
+            Close
+          </button>
+        </div>
+        <div className="text-center text-gray-500 text-sm mt-4">
+          <p>&copy; 2023 Your Company Name. All rights reserved.</p>
+          <p>Payment processing provided by Stripe and PayPal.</p>
+        </div>
+      </Modal>
     </div>
   );
 };
