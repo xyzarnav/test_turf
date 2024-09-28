@@ -14,6 +14,7 @@ const AddTurf = () => {
     badminton: false,
     area: "",
     detailed_info: "",
+    Dimension:"",
   });
 
   const [error, setError] = useState(null);
@@ -44,6 +45,7 @@ const AddTurf = () => {
         badminton: false,
         area: "",
         detailed_info: "",
+        Dimension: "",
       });
     } catch (error) {
       console.error("Error adding turf:", error);
@@ -171,13 +173,30 @@ const AddTurf = () => {
               htmlFor="area"
               className="block text-sm font-medium text-gray-700"
             >
-              Area:
+              Place:
             </label>
             <input
               type="text"
               id="area"
               name="area"
               value={turfData.area}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="Dimension"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Dimension9(sq-meters)
+            </label>
+            <input
+              type="text"
+              id="Dimension"
+              name="Dimension"
+              value={turfData.Dimension}
               onChange={handleChange}
               required
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"

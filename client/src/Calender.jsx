@@ -18,25 +18,20 @@ const CalendarComponent = () => {
   const [loading, setLoading] = useState(false);
   const userEmail = localStorage.getItem("UserEmail");
 
-  const fetchBookings = async (selectedDate) => {
-    if (!userEmail) {
-      console.error("User email not found in localStorage");
-      return;
-    }
-
-    const formattedDate = selectedDate.toISOString().split("T")[0];
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `http://localhost:3001/bookings/${userEmail}/${formattedDate}`
-      );
-      setBookings(response.data);
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const fetchBookings = async (selectedDate) => {
+   const formattedDate = selectedDate.toISOString().split("T")[0];
+   setLoading(true);
+   try {
+     const response = await axios.get(
+       `http://localhost:3001/bookings/${formattedDate}`
+     );
+     setBookings(response.data);
+   } catch (error) {
+     console.error("Error fetching bookings:", error);
+   } finally {
+     setLoading(false);
+   }
+ };
 
   useEffect(() => {
     fetchBookings(value);
@@ -55,13 +50,13 @@ const CalendarComponent = () => {
           <FontAwesomeIcon icon={faClock} className="mr-2 text-blue-400" />
           Time: {booking.time_slot}:00 - {booking.time_slot + 1}:00
         </p>
-        <p className="text-black flex items-center mb-1">
+        {/* <p className="text-black flex items-center mb-1">
           <FontAwesomeIcon icon={faRupeeSign} className="mr-2 text-green-400" />
           Amount:{" "}
           <span className="font-bold text-black ml-1">
             {booking.price} Rupees
           </span>
-        </p>
+        </p> */}
         <p className="text-black flex items-center">
           <FontAwesomeIcon icon={faUsers} className="mr-2 text-yellow-400" />
           Number of People:{" "}

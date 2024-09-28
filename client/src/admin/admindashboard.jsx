@@ -5,6 +5,7 @@ import Navbar from "../Navbar";
 import Overview from "./Overview";
 import Users from "./Users";
 import Revenue from "./Revenue";
+import Bookings from "./Bookings";
 
 const AdminDashboard = () => {
   const [selectedSection, setSelectedSection] = useState("overview");
@@ -78,6 +79,15 @@ const AdminDashboard = () => {
                 Revenue
               </a>
             </li>
+            <li className="mb-4">
+              <a
+                href="#Bookings"
+                className="text-gray-300 hover:text-white"
+                onClick={() => setSelectedSection("Bookings")}
+              >
+                Bookings
+              </a>
+            </li>
           </ul>
         </nav>
         <main className="flex-1 p-4">
@@ -86,6 +96,7 @@ const AdminDashboard = () => {
           )}
           {selectedSection === "users" && <Users />}
           {selectedSection === "revenue" && <Revenue chartData={chartData} />}
+          {selectedSection === "Bookings" && <Bookings/>}
         </main>
       </div>
     </div>

@@ -72,7 +72,7 @@ const RegisterPage = () => {
   };
 
   const handlePayment = async () => {
-    toast.info("Payment processing...");
+    toast.info("Payment processing...", { autoClose: 800 });
     if (stripe && elements) {
       const { clientSecret } = await fetch(
         "http://localhost:3001/create-payment-intent",
@@ -96,7 +96,7 @@ const RegisterPage = () => {
         setErrorMessage(error.message);
       } else if (paymentIntent.status === "succeeded") {
         // Payment succeeded
-        toast.success("Payment successful!");
+        toast.success("Payment successful!", { autoClose: 1000 });
 
         // Now update the wallet balance using the userId from state
         await fetch("http://localhost:3001/update-wallet", {
@@ -137,6 +137,14 @@ const RegisterPage = () => {
             required
           />
 
+          <label htmlFor="password">Contact</label>
+          <input
+            type="number"
+            value={contact}
+            onChange={(e) => setContact(e.target.value)}
+            placeholder="+91"
+            required
+          />
           <label htmlFor="password">Password</label>
           <input
             type="password"

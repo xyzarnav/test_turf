@@ -89,15 +89,15 @@ app.post("/login", (req, res) => {
 const bcrypt = require("bcrypt");
 
 app.post("/register", async (req, res) => {
-  const { name, email, password, dateOfBirth, gender } = req.body;
+  const { name, email, password, dateOfBirth, gender,contact } = req.body;
 
   try {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const sql =
-      "INSERT INTO userprofile (FullName, Email, Password, DateOfBirth, Gender) VALUES (?, ?, ?, ?, ?)";
-    const values = [name, email, hashedPassword, dateOfBirth, gender];
+      "INSERT INTO userprofile (FullName, Email, Password, DateOfBirth, Gender,Contact) VALUES (?, ?, ?, ?, ?, ?)";
+    const values = [name, email, hashedPassword, dateOfBirth, gender, contact];
 
     db.query(sql, values, (err, result) => {
       if (err) {
@@ -206,7 +206,7 @@ app.get("/turfs/:id", (req, res) => {
 app.post("/bookings", upload.single("paymentProof"), (req, res) => {
   const {
     name,
-    email,
+    
     date,
     time_slot,
     numberOfPeople,
@@ -216,10 +216,10 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
   const paymentProof = req.file ? req.file.filename : null;
 
   const sql =
-    "INSERT INTO bookings (name, email, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking) VALUES (?, ?, ?, ?, ?, ?, ?)";
   const values = [
     name,
-    email,
+    
     date,
     time_slot,
     paymentProof,
@@ -275,21 +275,39 @@ app.get("/turfs/:turfId/availability", (req, res) => {
 });
 
 // Fetch bookings for a user by email
-app.get("/bookings/:email", (req, res) => {
-  const email = req.params.email;
-  const sql = `
-        SELECT b.*, t.name as turfName, t.price
-        FROM bookings b
-        JOIN turfs t ON b.turf_id = t.id
-        WHERE b.email = ?
-    `;
+// app.get("/bookings/:email", (req, res) => {
+//   const email = req.params.email;
+//   const sql = `
+//         SELECT b.*, t.name as turfName, t.price
+//         FROM bookings b
+//         JOIN turfs t ON b.turf_id = t.id
+//         WHERE b.email = ?
+//     `;
 
-  db.query(sql, [email], (err, result) => {
+//   db.query(sql, [email], (err, result) => {
+//     if (err) {
+//       console.error("Error fetching bookings:", err);
+//       return res.status(500).json({ error: "Failed to fetch bookings" });
+//     }
+//     return res.status(200).json(result);
+//   });
+// });
+
+app.get("/bookings/:date", (req, res) => {
+  const selectedDate = req.params.date;
+
+  const query = `
+    SELECT * FROM bookings WHERE date = ?
+  `;
+
+  db.query(query, [selectedDate], (err, results) => {
     if (err) {
       console.error("Error fetching bookings:", err);
       return res.status(500).json({ error: "Failed to fetch bookings" });
     }
-    return res.status(200).json(result);
+
+    // Return the bookings for the selected date
+    res.json(results);
   });
 });
 

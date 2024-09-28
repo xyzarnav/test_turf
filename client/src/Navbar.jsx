@@ -87,15 +87,16 @@ const Navbar = () => {
                 </Link>
               </li>
             )}
-
-            <li className="navitem">
-              <Link
-                to="/bookingwindow"
-                className="text-white hover:text-gray-300 transition duration-300"
-              >
-                Book now
-              </Link>
-            </li>
+            {!isAdmin && (
+              <li className="navitem">
+                <Link
+                  to="/bookingwindow"
+                  className="text-white hover:text-gray-300 transition duration-300"
+                >
+                  Book now
+                </Link>
+              </li>
+            )}
           </ul>
 
           <Link to="/profile" className="avatar-link">

@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Card, DatePicker } from "antd";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
 
 const BookingPage = () => {
@@ -55,7 +56,7 @@ const BookingPage = () => {
 
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("email", email);
+    // formData.append("email", email);
     formData.append("date", date);
     formData.append("time_slot", selectedTime);
     formData.append("paymentProof", paymentProof);
@@ -77,6 +78,7 @@ const BookingPage = () => {
         setPaymentProof(null);
         setNumberOfPeople(1);
         setMethodOfBooking("online");
+        toast.success("Turf booked successfully!");
       })
       .catch((error) => console.error("Error making booking:", error));
   };
@@ -127,7 +129,7 @@ const BookingPage = () => {
         <div className="md:w-1/2 p-4">
           <div className="relative">
             <img
-              src={turf.imageUrl}
+              src={turf.imageURL}
               alt={turf.name}
               className="w-full h-60 object-cover rounded-lg shadow-lg"
             />
@@ -161,7 +163,7 @@ const BookingPage = () => {
                 required
               />
 
-              <label htmlFor="email" className="font-semibold">
+              {/* <label htmlFor="email" className="font-semibold">
                 Email:
               </label>
               <input
@@ -172,7 +174,7 @@ const BookingPage = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
-              />
+              /> */}
 
               <label htmlFor="date" className="font-semibold">
                 Date:
@@ -221,7 +223,7 @@ const BookingPage = () => {
                     onChange={(e) => setMethodOfBooking(e.target.value)}
                   />
                   <label htmlFor="online" className="ml-2">
-                    Online
+                    Online-Wallet
                   </label>
                 </div>
                 <div>
@@ -234,7 +236,7 @@ const BookingPage = () => {
                     onChange={(e) => setMethodOfBooking(e.target.value)}
                   />
                   <label htmlFor="in_person" className="ml-2">
-                    In Person
+                    In-Person
                   </label>
                 </div>
                 <div>
@@ -253,7 +255,7 @@ const BookingPage = () => {
               </div>
 
               <label htmlFor="paymentProof" className="font-semibold">
-                Payment Proof (Image):
+                Identity Proof (Masked Adhar Card):
               </label>
               <input
                 type="file"

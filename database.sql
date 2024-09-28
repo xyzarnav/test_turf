@@ -5,9 +5,12 @@ CREATE TABLE turfs (
     cricket BOOLEAN DEFAULT FALSE, -- Whether the turf supports cricket
     football BOOLEAN DEFAULT FALSE, -- Whether the turf supports football
     badminton BOOLEAN DEFAULT FALSE, -- Whether the turf supports badminton
+    SWIMMING BOOLEAN DEFAULT FALSE, -- Whether the turf supports swimming
+    MULTISPORTS BOOLEAN DEFAULT FALSE, -- Whether the turf supports multiple sports
     area VARCHAR(100) NOT NULL,
+    Dimension VARCHAR(100) NOT NULL,  
     detailed_info TEXT, -- Additional information about the turf
-    imageURL VARCHAR(255), -- URL of the turf image
+    imageURL VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -17,7 +20,8 @@ CREATE TABLE userprofile (
     Email VARCHAR(100) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
     DateOfBirth DATE NOT NULL,
-    Gender ENUM('Male', 'Female', 'Other') NOT NULL
+    Gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    Contact VARCHAR(12) NOT NULL
 );
 
 CREATE TABLE admin (
@@ -31,7 +35,7 @@ CREATE TABLE admin (
 CREATE TABLE bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    
     date DATE NOT NULL,  -- The booking date
     time_slot INT NOT NULL,  -- The time slot (e.g., 6, 7, 8 for hours)
     paymentProof VARCHAR(255),  -- File name or path for payment proof
