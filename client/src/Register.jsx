@@ -24,6 +24,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [gender, setGender] = useState("");
+  const [userId, setUserId] = useState(null); // New state for user_id
   const [wallet, setWallet] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -32,74 +33,67 @@ const RegisterPage = () => {
   const stripe = useStripe();
   const elements = useElements();
 
- const handleRegister = async (e) => {
-   e.preventDefault();
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-   const registrationResponse = await fetch("http://localhost:3001/register", {
-     method: "POST",
-     headers: { "Content-Type": "application/json" },
-     body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
-   }).then((res) => res.json());
+    const registrationResponse = await fetch("http://localhost:3001/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
+    }).then((res) => res.json());
 
-   console.log("Registration response:", registrationResponse);
+    console.log("Registration response:", registrationResponse);
 
-   if (registrationResponse.message === "User registered successfully") {
-     // Instead of showing the toast here, open the modal for payment
-     setModalIsOpen(true); // Open the modal for payment input
-   } else {
-     toast.error("Registration failed. Please try again.");
-   }
- };
+    if (registrationResponse.message === "User registered successfully") {
+      setUserId(registrationResponse.user_id); // Store user_id in state
+      setModalIsOpen(true); // Open the modal for payment input
+    } else {
+      toast.error("Registration failed. Please try again.");
+    }
+  };
 
- const handlePayment = async () => {
-   if (stripe && elements) {
-     const { clientSecret } = await fetch(
-       "http://localhost:3001/create-payment-intent",
-       {
-         method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ amount: wallet }),
-       }
-     ).then((res) => res.json());
+  const handlePayment = async () => {
+    if (stripe && elements) {
+      const { clientSecret } = await fetch(
+        "http://localhost:3001/create-payment-intent",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: wallet }),
+        }
+      ).then((res) => res.json());
 
-     const { error, paymentIntent } = await stripe.confirmCardPayment(
-       clientSecret,
-       {
-         payment_method: {
-           card: elements.getElement(CardElement),
-         },
-       }
-     );
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: elements.getElement(CardElement),
+          },
+        }
+      );
 
-     if (error) {
-       setErrorMessage(error.message);
-     } else if (paymentIntent.status === "succeeded") {
-      const registrationResponse = await fetch("http://localhost:3001/register", {
-     method: "POST",
-     headers: { "Content-Type": "application/json" },
-     body: JSON.stringify({ name, email, password, dateOfBirth, gender }),
-   }).then((res) => res.json());
-       // Payment succeeded
-       toast.success("Payment successful!");
+      if (error) {
+        setErrorMessage(error.message);
+      } else if (paymentIntent.status === "succeeded") {
+        // Payment succeeded
+        toast.success("Payment successful!");
 
-       // Now update the wallet balance
-       await fetch("http://localhost:3001/update-wallet", {
-         method: "POST",
-         headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({
-           user_id: registrationResponse.user_id, // Send user_id from registration response
-           amount: wallet,
-         }),
-       });
+        // Now update the wallet balance using the userId from state
+        await fetch("http://localhost:3001/update-wallet", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: userId, // Use user_id from state
+            amount: wallet,
+          }),
+        });
 
-       // Now that both registration and payment are complete, show the success toast for registration
-       toast.success("Registration and payment complete!");
-
-       navigate("/");
-     }
-   }
- };
-
+        // Now that both registration and payment are complete, show the success toast for registration
+        toast.success("Registration and payment complete!");
+        navigate("/");
+      }
+    }
+  };
 
   return (
     <div className="register-page">
