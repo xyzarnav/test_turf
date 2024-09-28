@@ -16,47 +16,43 @@ const CalendarComponent = () => {
   const [value, setValue] = useState(new Date());
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
-  const userEmail = localStorage.getItem("UserEmail");
 
- const fetchBookings = async (selectedDate) => {
-   const formattedDate = selectedDate.toISOString().split("T")[0];
-   setLoading(true);
-   try {
-     const response = await axios.get(
-       `http://localhost:3001/bookings/${formattedDate}`
-     );
-     setBookings(response.data);
-   } catch (error) {
-     console.error("Error fetching bookings:", error);
-   } finally {
-     setLoading(false);
-   }
- };
+  const fetchBookings = async (selectedDate) => {
+    const formattedDate = selectedDate.toISOString().split("T")[0];
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/bookings/${formattedDate}`
+      );
+      setBookings(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching bookings:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchBookings(value);
   }, [value]);
 
   const formatBookings = () => {
+    if (loading) {
+      return <p>Loading...</p>;
+    }
     if (bookings.length === 0) {
-      return `No bookings for ${value.toDateString()}`;
+      return <p>No bookings for {value.toDateString()}</p>;
     }
     return bookings.map((booking) => (
       <div key={booking.id} className="p-4 border-b border-gray-700 w-full">
-        <h3 className="font-semibold text-lg text-black mb-2">
+        <h3 className="font-semibold text-lg text-black mb-2 text-center">
           {booking.turfName}
         </h3>
         <p className="text-black flex items-center mb-1">
           <FontAwesomeIcon icon={faClock} className="mr-2 text-blue-400" />
           Time: {booking.time_slot}:00 - {booking.time_slot + 1}:00
         </p>
-        {/* <p className="text-black flex items-center mb-1">
-          <FontAwesomeIcon icon={faRupeeSign} className="mr-2 text-green-400" />
-          Amount:{" "}
-          <span className="font-bold text-black ml-1">
-            {booking.price} Rupees
-          </span>
-        </p> */}
         <p className="text-black flex items-center">
           <FontAwesomeIcon icon={faUsers} className="mr-2 text-yellow-400" />
           Number of People:{" "}
@@ -84,9 +80,7 @@ const CalendarComponent = () => {
             <h2 className="text-2xl font-bold text-center mb-4">
               Bookings for {value.toDateString()}:
             </h2>
-            <div className="text-gray-700">
-              {loading ? <p>Loading...</p> : formatBookings()}
-            </div>
+            <div className="text-gray-700">{formatBookings()}</div>
           </div>
         </div>
       </div>

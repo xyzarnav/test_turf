@@ -238,6 +238,25 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
   });
 });
 
+app.get("/admin/bookings", (req, res) => {
+  const sql = `
+    SELECT bookings.*, turfs.name AS turf_name
+    FROM bookings
+    JOIN turfs ON bookings.turf_id = turfs.id
+    ORDER BY bookings.created_at DESC
+  `;
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching bookings:", err);
+      return res.status(500).json({ error: "Failed to fetch bookings" });
+    }
+    return res.status(200).json(results); // Return all bookings
+  });
+});
+
+
+
 app.get("/users", (req, res) => {
   const sql = "SELECT * FROM userprofile";
   db.query(sql, (err, result) => {
@@ -296,9 +315,12 @@ app.get("/turfs/:turfId/availability", (req, res) => {
 app.get("/bookings/:date", (req, res) => {
   const selectedDate = req.params.date;
 
-  const query = `
-    SELECT * FROM bookings WHERE date = ?
-  `;
+   const query = `
+      SELECT bookings.*, turfs.name 
+      FROM bookings 
+      JOIN turfs ON bookings.turf_id = turfs.id 
+      WHERE bookings.date = ?
+    `;
 
   db.query(query, [selectedDate], (err, results) => {
     if (err) {
