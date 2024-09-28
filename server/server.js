@@ -60,10 +60,12 @@ app.post("/addTurf", (req, res) => {
 });
 
 // Login endpoint
+// Login endpoint
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  const sql = "SELECT * FROM userprofile WHERE Email = ? AND Password = ?";
-  db.query(sql, [email, password], (err, result) => {
+  const sql = "SELECT * FROM userprofile WHERE Email = ?";
+
+  db.query(sql, [email], async (err, result) => {
     if (err) {
       console.error("Error logging in:", err);
       return res.status(500).json({ error: "Internal server error" });
@@ -71,9 +73,15 @@ app.post("/login", (req, res) => {
     if (result.length === 0) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
-    return res
-      .status(200)
-      .json({ message: "Login successful", user: result[0] });
+
+    const user = result[0];
+    const validPassword = await bcrypt.compare(password, user.Password);
+
+    if (!validPassword) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    return res.status(200).json({ message: "Login successful", user });
   });
 });
 
