@@ -5,6 +5,9 @@ import { Row, Col, Select, Button } from "antd";
 import TurfCard from "./TurfCard"; // Import your TurfCard component
 import Footer from "./Footer"; // Import your Footer component
 import Navbar from "./Navbar";
+import { SearchOutlined } from "@ant-design/icons";
+
+
 
 const { Option } = Select;
 
@@ -66,13 +69,13 @@ const BookingPage = () => {
   return (
     <>
       <Navbar />
-      <div className="cards-background bg-black rounded-lg shadow-md p-5">
+      <div className="cards-background bg-black shadow-md p-5">
         <div className="filter-section mb-5">
-          <h2 className="filter-title text-xl font-semibold mb-3 text-white">
-            Filters
-          </h2>
-          <div className="filter-options flex flex-wrap justify-between items-center">
-            <div className="filter-option mb-3 sm:mb-0 sm:mr-3">
+          <div className="filter-options flex flex-wrap  items-center">
+            <h2 className="filter-title text-xl font-semibold  text-white">
+              Filters
+            </h2>
+            <div className="filter-option mb-3 ml-5 sm:mb-0 sm:mr-3">
               <label
                 htmlFor="area"
                 className="block text-sm font-medium text-gray-300"
@@ -117,12 +120,11 @@ const BookingPage = () => {
               onClick={handleApplyFilters}
               type="primary"
               className="apply-button bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-            >
-              Apply
-            </Button>
+              icon={<SearchOutlined />}
+            ></Button>
           </div>
         </div>
-        <div className="card-container">
+        <div className="card-container mb-40">
           <Row gutter={[16, 16]}>
             {data.map((turf) => (
               <Col key={turf.id} xs={24} sm={12} md={8}>
@@ -131,8 +133,8 @@ const BookingPage = () => {
             ))}
           </Row>
         </div>
-        <Footer />
-         </div>
+      </div>
+      <Footer />
     </>
   );
 };
