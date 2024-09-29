@@ -1,46 +1,46 @@
+/* Overall page styling */
 .register-page {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url("https://t4.ftcdn.net/jpg/04/24/42/49/360_F_424424973_gbWTLm4RkYpRPrKpWxf77X2GvJUzdUWA.jpg");
+    background-image: url("./assets/media/turf.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.login-content { /* Use the same class name as in the login page */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 600px;
-    width: 100%;
-}
-
+/* Register form container */
 .register-form {
     flex: 1;
     padding: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
 }
 
+/* Form heading */
 .register-form h2 {
     color: #4caf50;
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* Form elements */
 .register-form form {
     display: flex;
     flex-direction: column;
 }
 
+/* Labels */
 .register-form label {
     margin-bottom: 5px;
     font-weight: bold;
     color: #333;
 }
 
+/* Input fields and select dropdown */
 .register-form input,
 .register-form select {
     margin-bottom: 15px;
@@ -48,8 +48,11 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Submit button */
 .register-form button {
     padding: 10px;
     background-color: #4caf50;
@@ -61,35 +64,36 @@
     transition: background-color 0.3s ease;
 }
 
+/* Button hover effect */
 .register-form button:hover {
     background-color: #45a049;
 }
 
+/* Form footer text */
 .register-form p {
     margin-top: 15px;
     text-align: center;
 }
 
+/* Links in the form */
 .register-form a {
     color: #4caf50;
     text-decoration: none;
 }
 
+/* Link hover effect */
 .register-form a:hover {
     text-decoration: underline;
 }
 
+/* Error message styling */
 .error-message {
     color: red;
     text-align: center;
     margin-top: 10px;
 }
 
-.navmistake {
-    background-color: #20262e;
-    width: 100%;
-    height: 22px;
-}
+/* Payment modal overlay */
 .payment-modal {
     position: fixed;
     top: 0;
@@ -103,6 +107,7 @@
     z-index: 1000;
 }
 
+/* Modal content */
 .modal-content {
     background: white;
     padding: 20px;
@@ -110,28 +115,33 @@
     width: 300px;
     text-align: center;
 }
+
+/* Form group styling for better spacing */
 .form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
 }
 
+/* Form label styling */
 .form-label {
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
 
-.form-input {
-  font-size: 1rem;
-  padding: 0.5rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
+/* Input and select field styling */
+.form-input,
 .form-select {
-  font-size: 1rem; /* Adjust the font size as needed */
-  padding: 0.5rem; /* Add padding for better appearance */
-  width: 100%; /* Ensure the select element takes the full width of its container */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-}   
+    font-size: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Navigation bar styling */
+.navmistake {
+    background-color: #20262e;
+    width: 100%;
+    height: 22px;
+}

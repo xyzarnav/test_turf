@@ -154,12 +154,12 @@ const HomePage = () => {
             MEET YOUR PALS OVER GAME
           </h1>
           <p className="text-white px-16 mt-5 font-light md:text-lg">
-            Want to play games ?
+            Looking for a game?
             <br />
-            But don't get an opponent team?
+            But can't find an opponent?
             <br />
-            You can Invite a team or Join a pre scheduled match Through
-            Playspots
+            You can invite a team or join a pre scheduled match through
+            TurfIt
           </p>
         </div>
         <div className="hidden md:flex md:w-1/2">

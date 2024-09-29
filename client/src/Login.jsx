@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import logo from "./path/to/your/logo.png"; // Update the path to your logo
+import logo from './assets/media/logo.png';
+
 import "./Login.css"; // If you have custom styles
 import { toast } from "react-toastify";
 
@@ -78,11 +80,11 @@ const LoginPage = () => {
   return (
     <div
       className="flex items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: 'url("path/to/your/background.jpg")' }}
+      style={{ backgroundImage: 'url("path/to/your/background.jpg")' }} // Keep your background image here
     >
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 bg-opacity-90">
         <div className="flex justify-center mb-4">
-          <img alt="Logo" className="h-16" />
+          <img src={logo} alt="Logo" className="h-16" /> {/* Update this line */}
         </div>
         <div className="flex justify-between mb-4">
           <button
@@ -106,9 +108,9 @@ const LoginPage = () => {
             Admin Login
           </button>
         </div>
-
+  
         {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
-
+  
         {/* User Login Form */}
         {!isAdminLogin && (
           <form onSubmit={handleLogin} className="space-y-4">
@@ -151,7 +153,7 @@ const LoginPage = () => {
             </p>
           </form>
         )}
-
+  
         {/* Admin Login Form */}
         {isAdminLogin && (
           <form onSubmit={handleAdminLogin} className="space-y-4">
@@ -195,6 +197,7 @@ const LoginPage = () => {
       </div>
     </div>
   );
+  
 };
 
 export default LoginPage;
