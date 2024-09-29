@@ -27,6 +27,7 @@ app.get("/", (req, res) => {
   return res.json("From Backend Side - Prasad");
 });
 
+
 // Fetch user profile
 app.get("/user/:userId", (req, res) => {
   const userId = req.params.userId;
@@ -336,7 +337,7 @@ app.get("/bookings/:date", (req, res) => {
 // Fetch all turfs with sorting and filtering by area
 app.get("/turfs", (req, res) => {
   const { priceOrder, area } = req.query;
-  let sql = "SELECT id, name, price, area, imageUrl FROM turfs"; // Include imageUrl in the select query
+  let sql = "SELECT id, name, price, area, imageUrl,Dimension FROM turfs"; // Include imageUrl in the select query
   let params = [];
 
   if (area) {

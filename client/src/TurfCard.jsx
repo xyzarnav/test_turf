@@ -1,16 +1,27 @@
-import React from 'react';
-import { Card, Button } from 'antd';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Card, Button } from "antd";
+import { Link } from "react-router-dom";
+import {
+  DollarOutlined,
+  EnvironmentOutlined,
+  AppstoreOutlined,
+} from "@ant-design/icons";
 
 const { Meta } = Card;
 
 const TurfCard = ({ turf }) => {
   const handleBookNow = (turfId) => {
-    localStorage.setItem('selectedTurfId', turfId); // Store turf ID in local storage
+    localStorage.setItem("selectedTurfId", turfId); // Store turf ID in local storage
   };
 
+  // Debugging: Log the turf object to check its properties
+  console.log(turf);
+
   return (
-    <Link to="/bookingpage" className="block transform transition duration-300 hover:scale-105">
+    <Link
+      to="/bookingpage"
+      className="block transform transition duration-300 hover:scale-105"
+    >
       <Card
         hoverable
         className="rounded-lg shadow-lg overflow-hidden"
@@ -25,9 +36,19 @@ const TurfCard = ({ turf }) => {
         <Meta
           title={<span className="text-lg font-semibold">{turf.name}</span>}
           description={
-            <div className="text-gray-600">
-              <p>Price: {turf.price}</p>
-              <p>Area: {turf.area}</p>
+            <div className="text-gray-900">
+              <p>
+                <DollarOutlined style={{ color: "black" }} /> Price:{" "}
+                {turf.price}
+              </p>
+              <p>
+                <EnvironmentOutlined style={{ color: "black" }} /> Area:{" "}
+                {turf.area}
+              </p>
+              <p>
+                <AppstoreOutlined style={{ color: "black" }} /> Dimension:{" "}
+                {turf.Dimension} sq-meters
+              </p>
             </div>
           }
         />

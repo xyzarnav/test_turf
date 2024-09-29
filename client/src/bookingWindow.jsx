@@ -80,7 +80,7 @@ const BookingPage = () => {
                 htmlFor="area"
                 className="block text-sm font-medium text-gray-300"
               >
-                Search Area:
+                Search Place:
               </label>
               <Select
                 value={selectedArea}
