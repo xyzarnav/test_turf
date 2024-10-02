@@ -1,0 +1,15 @@
+* {
+  font-family: "montserrat";
+}
+
+#top-nav {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 100px;
+  position: fixed;
+  z-index: 99;
+  gap: 100px;
+}

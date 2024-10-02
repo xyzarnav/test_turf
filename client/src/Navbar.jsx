@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Space } from "antd";
+import "./Navbar.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -17,14 +20,13 @@ const Navbar = () => {
     // Redirect to the home page or login page
     navigate("/");
   };
-
   return (
-    <nav className="bg-gray-800 bg-opacity-75 p-4 shadow-lg border-b border-gray-700">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav id="nav1">
+      <div id="top-nav">
         <Link
           to="/"
           id="sitetitle"
-          className="text-white text-3xl font-bold hover:text-gray-300 transition duration-300"
+          className="text-white text-3xl font-bold hover:text-white transition duration-300"
         >
           TurfIt
         </Link>
@@ -34,26 +36,26 @@ const Navbar = () => {
             <li className="navitem">
               <Link
                 to="/home"
-                className="text-white hover:text-gray-300 transition duration-300"
+                className="text-white hover:text-white transition duration-300"
               >
-                Home
+                HOME
               </Link>
             </li>
             <li className="navitem">
               <Link
                 to="/about"
-                className="text-white hover:text-gray-300 transition duration-300"
+                className="text-white hover:text-white transition duration-300"
               >
-                About
+                ABOUT
               </Link>
             </li>
             {!isAdmin && (
               <li className="navitem">
                 <Link
                   to="/contact"
-                  className="text-white hover:text-gray-300 transition duration-300"
+                  className="text-white hover:text-white transition duration-300"
                 >
-                  Contact
+                  CONTACT
                 </Link>
               </li>
             )}
@@ -61,18 +63,18 @@ const Navbar = () => {
               <li className="navitem">
                 <Link
                   to="/Dashboard"
-                  className="text-white hover:text-gray-300 transition duration-300"
+                  className="text-white hover:text-white transition duration-300"
                 >
-                  Dashboard
+                  DASHBOARD
                 </Link>
               </li>
             )}
             <li className="navitem">
               <Link
                 to="/calendar"
-                className="text-white hover:text-gray-300 transition duration-300"
+                className="text-white hover:text-white transition duration-300"
               >
-                Calendar
+                CALENDER
               </Link>
             </li>
 
@@ -81,9 +83,9 @@ const Navbar = () => {
               <li className="navitem">
                 <Link
                   to="/addturf"
-                  className="text-white hover:text-gray-300 transition duration-300"
+                  className="text-white hover:text-white transition duration-300"
                 >
-                  Add Turf
+                  ADD TURF
                 </Link>
               </li>
             )}
@@ -91,9 +93,9 @@ const Navbar = () => {
               <li className="navitem">
                 <Link
                   to="/bookingwindow"
-                  className="text-white hover:text-gray-300 transition duration-300"
+                  className="text-white hover:text-white transition duration-300"
                 >
-                  Book now
+                  BOOK NOW
                 </Link>
               </li>
             )}
@@ -110,9 +112,9 @@ const Navbar = () => {
           {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="text-white hover:text-gray-300 transition duration-300"
+            className="text-white hover:text-white transition duration-300"
           >
-            Logout
+            LOGOUT
           </button>
         </div>
       </div>
