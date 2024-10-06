@@ -1,4 +1,3 @@
-// AdminDashboard.jsx
 import React, { useState, useEffect } from "react";
 import "tailwindcss/tailwind.css";
 import Navbar from "../Navbar";
@@ -9,39 +8,17 @@ import Bookings from "./Bookings";
 
 const AdminDashboard = () => {
   const [selectedSection, setSelectedSection] = useState("overview");
-  const [data, setData] = useState([]);
-  const [chartData, setChartData] = useState([]);
-  const [columns, setColumns] = useState([]);
+  const [turfData, setTurfData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/admin/bookings");
+        const response = await fetch("http://localhost:3001/admin/turfs");
         const result = await response.json();
+        console.log(result);
 
-        // Process data for Overview and Revenue components
-        const processedData = result.map((booking) => ({
-          col1: booking.turf_name,
-          col2: booking.turf_price,
-        }));
-
-        const processedChartData = result.map((booking) => ({
-          name: booking.turf_name,
-          revenue: booking.turf_price,
-        }));
-
-        setData(processedData);
-        setChartData(processedChartData);
-        setColumns([
-          {
-            Header: "Turf Name",
-            accessor: "col1",
-          },
-          {
-            Header: "Price",
-            accessor: "col2",
-          },
-        ]);
+        // Set the fetched data directly to the state
+        setTurfData(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -98,10 +75,46 @@ const AdminDashboard = () => {
         </nav>
         <main className="flex-1 p-4">
           {selectedSection === "overview" && (
-            <Overview data={data} columns={columns} />
+            <Overview
+              data={turfData}
+              columns={[
+                { Header: "Turf Name", accessor: "name" },
+                { Header: "Price", accessor: "price" },
+                { Header: "Area", accessor: "area" },
+                { Header: "Dimension", accessor: "Dimension" },
+                {
+                  Header: "Cricket",
+                  accessor: "cricket",
+                  Cell: ({ value }) => (value ? "Yes" : "No"),
+                },
+                {
+                  Header: "Football",
+                  accessor: "football",
+                  Cell: ({ value }) => (value ? "Yes" : "No"),
+                },
+                {
+                  Header: "Badminton",
+                  accessor: "badminton",
+                  Cell: ({ value }) => (value ? "Yes" : "No"),
+                },
+                {
+                  Header: "Swimming",
+                  accessor: "SWIMMING",
+                  Cell: ({ value }) => (value ? "Yes" : "No"),
+                },
+                {
+                  Header: "Multisports",
+                  accessor: "MULTISPORTS",
+                  Cell: ({ value }) => (value ? "Yes" : "No"),
+                },
+                // { Header: "Detailed Info", accessor: "detailed_info" },
+                // { Header: "Image URL", accessor: "imageURL" },
+                // { Header: "Created At", accessor: "created_at" },
+              ]}
+            />
           )}
           {selectedSection === "users" && <Users />}
-          {selectedSection === "revenue" && <Revenue chartData={chartData} />}
+          {selectedSection === "revenue" && <Revenue />}
           {selectedSection === "Bookings" && <Bookings />}
         </main>
       </div>

@@ -6,10 +6,12 @@ import Footer from "./Footer";
 import axios from "axios";
 import "./CustomCalendar.css"; // Import custom styles
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import {
   faClock,
   faRupeeSign,
   faUsers,
+  faTimes
 } from "@fortawesome/free-solid-svg-icons";
 
 const CalendarComponent = () => {
@@ -44,24 +46,46 @@ const CalendarComponent = () => {
     if (bookings.length === 0) {
       return <p>No bookings for {value.toDateString()}</p>;
     }
-    return bookings.map((booking) => (
-      <div key={booking.id} className="p-4 border-b border-gray-700 w-full">
-        <h3 className="font-semibold text-lg text-black mb-2 text-center">
-          {booking.turfName}
-        </h3>
-        <p className="text-black flex items-center mb-1">
-          <FontAwesomeIcon icon={faClock} className="mr-2 text-blue-400" />
-          Time: {booking.time_slot}:00 - {booking.time_slot + 1}:00
-        </p>
-        <p className="text-black flex items-center">
-          <FontAwesomeIcon icon={faUsers} className="mr-2 text-yellow-400" />
-          Number of People:{" "}
-          <span className="font-bold text-black ml-1">
-            {booking.numberOfPeople}
-          </span>
-        </p>
+    return (
+      <div className="h-96 overflow-y-auto">
+        {" "}
+        {/* Fixed height for scrolling */}
+        {bookings.map((booking) => (
+          <div key={booking.id} className="p-4 border-b border-gray-700 w-full">
+            <h3 className="font-semibold text-lg text-black mb-2 text-center">
+              {booking.turfName}
+            </h3>
+            <p className="text-black flex items-center mb-1">
+              <FontAwesomeIcon icon={faClock} className="mr-2 text-blue-400" />
+              Time: {booking.time_slot}:00 - {booking.time_slot + 1}:00
+            </p>
+            <p className="text-black flex items-center">
+              <FontAwesomeIcon
+                icon={faUsers}
+                className="mr-2 text-yellow-400"
+              />
+              Number of People:{" "}
+              <span className="font-bold text-black ml-1">
+                {booking.numberOfPeople}
+              </span>
+            </p>
+            <p className="text-black flex items-center">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="mr-2 text-blue-600"
+              />
+              Looking For Player:{" "}
+              <span className="font-bold text-black ml-1">
+                {booking.player_finder == 0
+                  ? "No"
+                  : booking.player_finder || "No"}
+              </span>
+            </p>
+          </div>
+        ))}
       </div>
-    ));
+    );
+
   };
 
   return (

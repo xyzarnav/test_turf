@@ -27,7 +27,6 @@ app.get("/", (req, res) => {
   return res.json("From Backend Side - Prasad");
 });
 
-
 // Fetch user profile
 app.get("/user/:userId", (req, res) => {
   const userId = req.params.userId;
@@ -86,11 +85,10 @@ app.post("/login", (req, res) => {
   });
 });
 
-
 const bcrypt = require("bcrypt");
 
 app.post("/register", async (req, res) => {
-  const { name, email, password, dateOfBirth, gender,contact } = req.body;
+  const { name, email, password, dateOfBirth, gender, contact } = req.body;
 
   try {
     // Hash the password
@@ -120,8 +118,7 @@ app.post("/register", async (req, res) => {
     return res.status(500).json({ error: "Failed to register user" });
   }
 });
-// 
-
+//
 
 // Admin Signup Endpoint
 app.post("/admin/signup", async (req, res) => {
@@ -183,9 +180,6 @@ app.post("/admin/login", (req, res) => {
   });
 });
 
-
-
-
 // Get turf by ID
 app.get("/turfs/:id", (req, res) => {
   const turfId = req.params.id;
@@ -207,26 +201,26 @@ app.get("/turfs/:id", (req, res) => {
 app.post("/bookings", upload.single("paymentProof"), (req, res) => {
   const {
     name,
-    
     date,
     time_slot,
     numberOfPeople,
     turfId,
     method_of_booking,
+    player_finder,
   } = req.body;
   const paymentProof = req.file ? req.file.filename : null;
 
   const sql =
-    "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking, player_finder) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     name,
-    
     date,
     time_slot,
     paymentProof,
     numberOfPeople,
     turfId,
     method_of_booking,
+    player_finder,
   ];
 
   db.query(sql, values, (err, result) => {
@@ -234,7 +228,7 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
       console.error("Error adding booking:", err);
       return res.status(500).json({ error: "Failed to add booking" });
     }
-    console.log("Booking added successfully");
+    console.log("Booking added successfully:", result);
     return res.status(200).json({ message: "Booking added successfully" });
   });
 });
@@ -256,7 +250,17 @@ app.get("/admin/bookings", (req, res) => {
   });
 });
 
-
+app.get("/admin/turfs", (req, res) => {
+  const query = "SELECT * FROM turfs";
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err);
+      res.status(500).send("Error fetching data");
+      return;
+    }
+    res.json(results);
+  });
+});
 
 app.get("/users", (req, res) => {
   const sql = "SELECT * FROM userprofile";
@@ -316,7 +320,7 @@ app.get("/turfs/:turfId/availability", (req, res) => {
 app.get("/bookings/:date", (req, res) => {
   const selectedDate = req.params.date;
 
-   const query = `
+  const query = `
       SELECT bookings.*, turfs.name 
       FROM bookings 
       JOIN turfs ON bookings.turf_id = turfs.id 
@@ -398,13 +402,9 @@ app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
 
-
-
 const stripe = require("stripe")(
   "sk_test_51Q3JV201cMS3vICJu3SgShx91j1BASqCarunkfHZrDqLoXYie5ffG9fkFwJnTUoxixQDIgc9v2J3hQv8ingae1FK00TOU7X0Vk"
 );
-
-
 
 app.post("/create-payment-intent", async (req, res) => {
   const { amount } = req.body; // amount in rupees
@@ -426,7 +426,6 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
-
 app.post("/update-wallet", (req, res) => {
   const { user_id, amount } = req.body;
 
@@ -440,7 +439,7 @@ app.post("/update-wallet", (req, res) => {
       console.error("Error fetching wallet:", err);
       return res.status(500).json({ error: "Error fetching wallet" });
     }
- 
+
     if (result.length > 0) {
       // Wallet exists, update balance
       const newBalance = parseFloat(result[0].balance) + parseFloat(amount);
@@ -454,12 +453,10 @@ app.post("/update-wallet", (req, res) => {
           return res.status(500).json({ error: "Error updating wallet" });
         }
         console.log("Wallet updated successfully");
-        return res
-          .status(200)
-          .json({
-            message: "Wallet updated successfully",
-            balance: newBalance,
-          });
+        return res.status(200).json({
+          message: "Wallet updated successfully",
+          balance: newBalance,
+        });
       });
     } else {
       // Wallet doesn't exist, insert new record
@@ -473,22 +470,14 @@ app.post("/update-wallet", (req, res) => {
           return res.status(500).json({ error: "Error inserting wallet" });
         }
         console.log("Wallet created and updated successfully");
-        return res
-          .status(200)
-          .json({
-            message: "Wallet created and updated successfully",
-            balance: amount,
-          });
+        return res.status(200).json({
+          message: "Wallet created and updated successfully",
+          balance: amount,
+        });
       });
     }
   });
 });
-
-
-
-
-  
-
 
 // Export the db object
 module.exports = { db };

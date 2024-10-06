@@ -35,7 +35,7 @@ CREATE TABLE admin (
 CREATE TABLE bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    
+    player_finder VARCHER(3) NOT NULL DEFAULT '0',
     date DATE NOT NULL,  -- The booking date
     time_slot INT NOT NULL,  -- The time slot (e.g., 6, 7, 8 for hours)
     paymentProof VARCHAR(255),  -- File name or path for payment proof
@@ -44,6 +44,8 @@ CREATE TABLE bookings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     method_of_booking ENUM('online', 'in_person', 'combine') DEFAULT 'online',
     FOREIGN KEY (turf_id) REFERENCES turfs(id)
+
+
 ) AUTO_INCREMENT = 1023;
 
 

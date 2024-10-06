@@ -11,7 +11,7 @@ const Overview = ({ data, columns }) => {
       <h2 className="text-xl font-bold mb-2">Overview</h2>
       <p>Welcome to the admin dashboard.</p>
       <section id="data-table" className="mb-8">
-        <h2 className="text-xl font-bold mb-2">Data Table</h2>
+        <h2 className="text-xl font-bold mb-2">MY TURFS</h2>
         <table
           {...getTableProps()}
           className="min-w-full bg-gray-800 text-white"

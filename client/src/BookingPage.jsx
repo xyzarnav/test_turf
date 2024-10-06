@@ -16,6 +16,7 @@ const BookingPage = () => {
   const [paymentProof, setPaymentProof] = useState(null);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
   const [bookedSlots, setBookedSlots] = useState([]);
+  const [playerFinder, setPlayerFinder] = useState("0");
   const [methodOfBooking, setMethodOfBooking] = useState("online");
 
   useEffect(() => {
@@ -56,13 +57,13 @@ const BookingPage = () => {
 
     const formData = new FormData();
     formData.append("name", name);
-    // formData.append("email", email);
     formData.append("date", date);
     formData.append("time_slot", selectedTime);
     formData.append("paymentProof", paymentProof);
     formData.append("numberOfPeople", numberOfPeople);
     formData.append("turfId", turf.id);
     formData.append("method_of_booking", methodOfBooking);
+    formData.append("player_finder", playerFinder);
 
     axios
       .post("http://localhost:3001/bookings", formData)
@@ -77,6 +78,7 @@ const BookingPage = () => {
         setSelectedTime("");
         setPaymentProof(null);
         setNumberOfPeople(1);
+        setPlayerFinder("No");
         setMethodOfBooking("online");
         toast.success("Turf booked successfully!");
       })
@@ -279,6 +281,25 @@ const BookingPage = () => {
                 className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
+              <div className="flex items-center space-x-2">
+                <label
+                  htmlFor="playerFinder"
+                  className="text-gray-700 font-semibold"
+                >
+                  Player Finder (Default No)
+                </label>
+                <input
+                  type="number"
+                  id="playerFinder"
+                  name="player_finder"
+                  value={playerFinder}
+                  onChange={(e) =>
+                    setPlayerFinder(parseInt(e.target.value, 10) || 0)
+                  }
+                  defaultValue={0}
+                  className="form-input h-5 w-20 text-blue-600"
+                />
+              </div>
 
               <button
                 type="submit"
