@@ -12,7 +12,9 @@ import AddTurf from './AddTurf';
 import Bookings from './Bookings'; 
 import Demo from './Demo';
 import Calender from './Calender';
+import ViewBookings from './view-bookings';
 import Dashboard from './admin/admindashboard';
+
 import Adminregisteration from "./adminregistration";
 import { ToastContainer } from "react-toastify";
 // import "antd/dist/antd.css"; 
@@ -50,6 +52,7 @@ const App = () => {
           <Route path="/demo" element={<Demo />} />
           <Route path="/Calendar" element={<Calender />} />
           <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/view-bookings" element={<ViewBookings />} />
           <Route path="/register_admin" element={<Adminregisteration />} />
         </Routes>
       </BrowserRouter>

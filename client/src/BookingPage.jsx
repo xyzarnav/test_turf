@@ -20,6 +20,21 @@ const BookingPage = () => {
   const [methodOfBooking, setMethodOfBooking] = useState("online");
   const [contact, setContact] = useState("");
   const [showContactDiv, setShowContactDiv] = useState(false);
+  const [userId, setUserId] = useState(null);
+
+
+useEffect(() => {
+  console.log(localStorage);
+  
+  const storedUserId = localStorage.UserID;
+  console.log("Retrieved userId:", storedUserId); // Check the value of userId
+  if (storedUserId) {
+    setUserId(storedUserId);
+  } else {
+    console.error("UserId not found in local storage.");
+  }
+}, []);
+
 
 
    const toastShownRef = useRef(false);
@@ -76,6 +91,8 @@ const BookingPage = () => {
       console.error("Please select payment proof");
       return;
     }
+    console.log("cheking",userId);
+    
 
     const formData = new FormData();
     formData.append("name", name);
@@ -87,6 +104,10 @@ const BookingPage = () => {
     formData.append("method_of_booking", methodOfBooking);
     formData.append("player_finder", playerFinder);
     formData.append("contact", contact);
+    formData.append("user_id", userId);
+    
+    // formData.append("user_id", id);
+
 
     axios
       .post("http://localhost:3001/bookings", formData)

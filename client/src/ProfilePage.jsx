@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import { BookOutlined, DollarOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -86,16 +87,19 @@ const ProfilePage = () => {
           </div>
         )}
         <div className="flex justify-center space-x-4">
+          <Link to="/view-bookings">
+            <button
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center"
+              // onClick={handleBookingsClick}
+            >
+              <BookOutlined className="mr-2" />
+              View Bookings
+            </button>
+          </Link>
+          
           <button
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center"
-            onClick={handleBookingsClick}
-          >
-            <BookOutlined className="mr-2" />
-            View Bookings
-          </button>
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center"
-            onClick={handleBookingsClick}
+            // onClick={handleBookingsClick}
           >
             <DollarOutlined className="mr-2" />
             Add Money

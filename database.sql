@@ -36,7 +36,7 @@ CREATE TABLE bookings (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     contact VARCHAR(50) ,
-    player_finder VARCHER(3) NOT NULL DEFAULT '0',
+    player_finder VARCHAR(3) NOT NULL DEFAULT '0',
     date DATE NOT NULL,  -- The booking date
     time_slot INT NOT NULL,  -- The time slot (e.g., 6, 7, 8 for hours)
     paymentProof VARCHAR(255),  -- File name or path for payment proof

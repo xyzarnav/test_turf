@@ -28,22 +28,54 @@ app.get("/", (req, res) => {
 });
 
 // Fetch user profile
-app.get("/user/:userId", (req, res) => {
-  const userId = req.params.userId;
-  const sql =
-    "SELECT FullName, Email, DateOfBirth, Gender FROM userprofile WHERE UserID = ?";
+// Fetch bookings for a specific user
+// Fetch bookings for a specific user
+app.get("/bookings/:userId", (req, res) => {
+    const userId = req.params.userId;
 
-  db.query(sql, [userId], (err, result) => {
+    const sql = `
+        SELECT bookings.*, turfs.name 
+        FROM bookings 
+        JOIN turfs ON bookings.turf_id = turfs.id 
+        WHERE bookings.user_id = ?`; // Assuming user_id is available in bookings
+
+    db.query(sql, [userId], (err, result) => {
+        if (err) {
+            console.error("Error fetching bookings:", err);
+            return res.status(500).json({ error: "Failed to fetch bookings" });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ error: "No bookings found" });
+        }
+        return res.status(200).json(result);
+    });
+});
+
+db.getUserById = (userId, callback) => {
+  const query = "SELECT * FROM userprofile WHERE UserID = ?";
+  db.query(query, [userId], (err, results) => {
     if (err) {
-      console.error("Error fetching user profile:", err);
-      return res.status(500).json({ error: "Failed to fetch user profile" });
+      return callback(err, null);
     }
-    if (result.length === 0) {
-      return res.status(404).json({ error: "User not foun" });
+    callback(null, results[0]);
+  });
+};
+
+// Route to get user by ID
+app.get("/user/:id", (req, res) => {
+  const userId = req.params.id;
+  db.getUserById(userId, (err, user) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to retrieve user" });
     }
-    return res.status(200).json(result[0]);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
   });
 });
+
+
 
 // Add turf
 app.post("/addTurf", (req, res) => {
@@ -208,11 +240,13 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
     method_of_booking,
     player_finder,
     contact,
+    user_id, // Add user_id to the destructured request body
   } = req.body;
   const paymentProof = req.file ? req.file.filename : null;
 
+  // Update the SQL query to include user_id
   const sql =
-    "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking, player_finder,contact) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
+    "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking, player_finder, contact, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     name,
     date,
@@ -223,6 +257,7 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
     method_of_booking,
     player_finder,
     contact,
+    user_id, // Include user_id in the values array
   ];
 
   db.query(sql, values, (err, result) => {
@@ -234,6 +269,7 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
     return res.status(200).json({ message: "Booking added successfully" });
   });
 });
+
 
 app.get("/admin/bookings", (req, res) => {
   const sql = `
@@ -480,6 +516,9 @@ app.post("/update-wallet", (req, res) => {
     }
   });
 });
+
+ 
+
 
 // Export the db object
 module.exports = { db };
