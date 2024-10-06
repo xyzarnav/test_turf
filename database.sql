@@ -85,3 +85,16 @@ CREATE TABLE wallet_transactions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES userprofile(UserID) ON DELETE CASCADE
 );
+
+CREATE TABLE events (
+    event_id INT AUTO_INCREMENT PRIMARY KEY,
+    imageURL VARCHAR(255) NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    link VARCHAR(255) NOT NULL,  -- New field for event link
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

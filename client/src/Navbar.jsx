@@ -77,6 +77,14 @@ const Navbar = () => {
                 CALENDER
               </Link>
             </li>
+            <li className="navitem">
+              <Link
+                to="/ShowEvents"
+                className="text-white hover:text-white transition duration-300"
+              >
+                EVENTS
+              </Link>
+            </li>
 
             {/* Conditionally render Add Turf if the user is an admin */}
             {isAdmin && (
@@ -86,6 +94,16 @@ const Navbar = () => {
                   className="text-white hover:text-white transition duration-300"
                 >
                   ADD TURF
+                </Link>
+              </li>
+            )}
+            {isAdmin && (
+              <li className="navitem">
+                <Link
+                  to="/AddEvent"
+                  className="text-white hover:text-white transition duration-300"
+                >
+                  ADD EVENT
                 </Link>
               </li>
             )}

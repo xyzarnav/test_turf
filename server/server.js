@@ -422,6 +422,36 @@ app.get("/turfs/:turfId/availability", (req, res) => {
 //   });
 // });
 
+//addevent
+app.post("/addEvent", (req, res) => {
+  const { imageURL, title, description, date, time, location, link } = req.body;
+
+  const sql =
+    "INSERT INTO events (imageURL, title, description, date, time, location, link) VALUES (?, ?, ?, ?, ?, ?, ?)";
+  const values = [imageURL, title, description, date, time, location, link];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error adding event:", err);
+      return res.status(500).json({ error: "Failed to add event" });
+    }
+    console.log("Event added successfully");
+    return res.status(200).json({ message: "Event added successfully" });
+  });
+});
+
+// showevents 
+app.get("/showevents", (req, res) => {
+  const sql = "SELECT * FROM events";
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error fetching events:", err);
+      return res.status(500).json({ error: "Failed to fetch events" });
+    }
+    res.status(200).json(results);
+  });
+});
 app.get("/booking/:date", (req, res) => {
   const selectedDate = req.params.date;
   console.log("Fetching bookings for date:", selectedDate); // Log the date

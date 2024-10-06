@@ -14,6 +14,8 @@ import Demo from './Demo';
 import Calender from './Calender';
 import Addmoney from './Addmoney.jsx';
 import ViewBookings from './view-bookings';
+import AddEvent from './AddEvent';
+import ShowEvents from "./ShowEvents";
 import Dashboard from './admin/admindashboard';
 
 import Adminregisteration from "./adminregistration";
@@ -49,8 +51,10 @@ const App = () => {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addturf" element={<AddTurf />} />
+          <Route path="/AddEvent" element={<AddEvent />} />
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/demo" element={<Demo />} />
+          <Route path="/ShowEvents" element={<ShowEvents />} />
           <Route path="/Calendar" element={<Calender />} />
           <Route path="/Addmoney" element={<Addmoney />} />
           <Route path="/Dashboard" element={<Dashboard />} />

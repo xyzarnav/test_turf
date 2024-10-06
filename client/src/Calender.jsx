@@ -7,15 +7,13 @@ import axios from "axios";
 import "./CustomCalendar.css"; // Import custom styles
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-// import { FaPhone } from "react-icons/fa"; 
 import { faPhone } from "@fortawesome/free-solid-svg-icons"; // Import the contact icon
 
 import {
   faClock,
-  faRupeeSign,
   faUsers,
-  faTimes
 } from "@fortawesome/free-solid-svg-icons";
+import ShowEvents from "./ShowEvents"; // Import the new ShowEvents component
 
 const CalendarComponent = () => {
   const [value, setValue] = useState(new Date());
@@ -51,8 +49,6 @@ const CalendarComponent = () => {
     }
     return (
       <div className="h-96 overflow-y-auto">
-        {" "}
-        {/* Fixed height for scrolling */}
         {bookings.map((booking) => (
           <div key={booking.id} className="p-4 border-b border-gray-700 w-full">
             <h3 className="font-semibold text-lg text-black mb-2 text-center">
@@ -72,7 +68,7 @@ const CalendarComponent = () => {
                 {booking.numberOfPeople}
               </span>
             </p>
-            {booking.player_finder > 0 && ( // Check if player_finder is greater than 0
+            {booking.player_finder > 0 && (
               <p className="text-black flex items-center">
                 <FontAwesomeIcon
                   icon={faMagnifyingGlass}
@@ -81,12 +77,10 @@ const CalendarComponent = () => {
                 Looking For Player:{" "}
                 <span className="font-bold text-black ml-1">
                   {booking.player_finder}{" "}
-                  {/* Display the player finder number */}
                   <FontAwesomeIcon
                     icon={faPhone}
                     className="ml-2 text-blue-600"
                   />{" "}
-                  {/* Contact icon */}
                   {booking.contact || "No"}
                 </span>
               </p>
@@ -95,12 +89,12 @@ const CalendarComponent = () => {
         ))}
       </div>
     );
-
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
+
       <div className="flex-grow flex items-center justify-center p-6">
         <div className="bg-white shadow-lg rounded-lg p-6 w-full flex max-w-full">
           <div className="flex-grow">
@@ -118,6 +112,9 @@ const CalendarComponent = () => {
           </div>
         </div>
       </div>
+
+      {/* <ShowEvents /> Use the new ShowEvents component */}
+
       <Footer />
     </div>
   );
