@@ -7,6 +7,9 @@ import axios from "axios";
 import "./CustomCalendar.css"; // Import custom styles
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+// import { FaPhone } from "react-icons/fa"; 
+import { faPhone } from "@fortawesome/free-solid-svg-icons"; // Import the contact icon
+
 import {
   faClock,
   faRupeeSign,
@@ -69,18 +72,25 @@ const CalendarComponent = () => {
                 {booking.numberOfPeople}
               </span>
             </p>
-            <p className="text-black flex items-center">
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                className="mr-2 text-blue-600"
-              />
-              Looking For Player:{" "}
-              <span className="font-bold text-black ml-1">
-                {booking.player_finder == 0
-                  ? "No"
-                  : booking.player_finder || "No"}
-              </span>
-            </p>
+            {booking.player_finder > 0 && ( // Check if player_finder is greater than 0
+              <p className="text-black flex items-center">
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  className="mr-2 text-blue-600"
+                />
+                Looking For Player:{" "}
+                <span className="font-bold text-black ml-1">
+                  {booking.player_finder}{" "}
+                  {/* Display the player finder number */}
+                  <FontAwesomeIcon
+                    icon={faPhone}
+                    className="ml-2 text-blue-600"
+                  />{" "}
+                  {/* Contact icon */}
+                  {booking.contact || "No"}
+                </span>
+              </p>
+            )}
           </div>
         ))}
       </div>

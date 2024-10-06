@@ -207,11 +207,12 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
     turfId,
     method_of_booking,
     player_finder,
+    contact,
   } = req.body;
   const paymentProof = req.file ? req.file.filename : null;
 
   const sql =
-    "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking, player_finder) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking, player_finder,contact) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
   const values = [
     name,
     date,
@@ -221,6 +222,7 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
     turfId,
     method_of_booking,
     player_finder,
+    contact,
   ];
 
   db.query(sql, values, (err, result) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./BookingPage.css"; // Ensure you have any custom CSS if needed
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -16,8 +16,13 @@ const BookingPage = () => {
   const [paymentProof, setPaymentProof] = useState(null);
   const [numberOfPeople, setNumberOfPeople] = useState(1);
   const [bookedSlots, setBookedSlots] = useState([]);
-  const [playerFinder, setPlayerFinder] = useState("0");
+  const [playerFinder, setPlayerFinder] = useState(0);
   const [methodOfBooking, setMethodOfBooking] = useState("online");
+  const [contact, setContact] = useState("");
+  const [showContactDiv, setShowContactDiv] = useState(false);
+
+
+   const toastShownRef = useRef(false);
 
   useEffect(() => {
     const turfId = localStorage.getItem("selectedTurfId");
@@ -47,6 +52,23 @@ const BookingPage = () => {
       .catch((error) => console.error("Error fetching availability:", error));
   }, [turf, date]);
 
+  useEffect(() => {
+    if (playerFinder !== 0 && !toastShownRef.current) {
+      toast.info(
+        "If you are using the player finder feature, you are required to enter your contact number.",
+        {
+          className: "custom-toast",
+          bodyClassName: "custom-toast-body",
+        }
+      );
+      setShowContactDiv(true);
+      toastShownRef.current = true;
+    } else if (playerFinder === 0) {
+      setShowContactDiv(false);
+      toastShownRef.current = false;
+    }
+  }, [playerFinder]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -64,6 +86,7 @@ const BookingPage = () => {
     formData.append("turfId", turf.id);
     formData.append("method_of_booking", methodOfBooking);
     formData.append("player_finder", playerFinder);
+    formData.append("contact", contact);
 
     axios
       .post("http://localhost:3001/bookings", formData)
@@ -78,8 +101,9 @@ const BookingPage = () => {
         setSelectedTime("");
         setPaymentProof(null);
         setNumberOfPeople(1);
-        setPlayerFinder("No");
+        setPlayerFinder(0);
         setMethodOfBooking("online");
+        setContact("");
         toast.success("Turf booked successfully!");
       })
       .catch((error) => console.error("Error making booking:", error));
@@ -281,6 +305,29 @@ const BookingPage = () => {
                 className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
+              {showContactDiv && (
+                <div>
+                  <label htmlFor="contact" className="font-semibold mt-4">
+                    Contact(+91):
+                  </label>
+                  <input
+                    type="tel"
+                    id="contact"
+                    name="contact"
+                    value={contact}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d{0,10}$/.test(value)) {
+                        setContact(value);
+                      }
+                    }}
+                    className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    maxLength="10"
+                    pattern="\d{10}"
+                    required
+                  />
+                </div>
+              )}
               <div className="flex items-center space-x-2">
                 <label
                   htmlFor="playerFinder"
