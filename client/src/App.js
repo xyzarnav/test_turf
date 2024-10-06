@@ -12,6 +12,7 @@ import AddTurf from './AddTurf';
 import Bookings from './Bookings'; 
 import Demo from './Demo';
 import Calender from './Calender';
+import Addmoney from './Addmoney.jsx';
 import ViewBookings from './view-bookings';
 import Dashboard from './admin/admindashboard';
 
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/bookings" element={<Bookings />} />
           <Route path="/demo" element={<Demo />} />
           <Route path="/Calendar" element={<Calender />} />
+          <Route path="/Addmoney" element={<Addmoney />} />
           <Route path="/Dashboard" element={<Dashboard />} />
           <Route path="/view-bookings" element={<ViewBookings />} />
           <Route path="/register_admin" element={<Adminregisteration />} />

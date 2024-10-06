@@ -111,7 +111,7 @@ const ViewBookings = () => {
               Profile
             </button>
           </Link>
-          <Link to="/add-money">
+          <Link to="/Addmoney">
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
               <DollarOutlined className="mr-2" />
               Add Money

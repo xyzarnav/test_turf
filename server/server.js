@@ -50,6 +50,22 @@ app.get("/bookings/:userId", (req, res) => {
         return res.status(200).json(result);
     });
 });
+app.get("/wallet/:userId", (req, res) => {
+  const userId = req.params.userId;
+
+  const sql = "SELECT balance FROM wallet WHERE user_id = ?";
+
+  db.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({ error: "Failed to fetch wallet balance" });
+    }
+    if (result.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.status(200).json({ wallet_balance: result[0].balance });
+  });
+});
 
 db.getUserById = (userId, callback) => {
   const query = "SELECT * FROM userprofile WHERE UserID = ?";
