@@ -1,5 +1,5 @@
 // AdminDashboard.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "tailwindcss/tailwind.css";
 import Navbar from "../Navbar";
 import Overview from "./Overview";
@@ -9,46 +9,52 @@ import Bookings from "./Bookings";
 
 const AdminDashboard = () => {
   const [selectedSection, setSelectedSection] = useState("overview");
+  const [data, setData] = useState([]);
+  const [chartData, setChartData] = useState([]);
+  const [columns, setColumns] = useState([]);
 
-  const data = React.useMemo(
-    () => [
-      { col1: "Row 1", col2: "Data 1" },
-      { col1: "Row 2", col2: "Data 2" },
-      { col1: "Row 3", col2: "Data 3" },
-    ],
-    []
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/admin/bookings");
+        const result = await response.json();
 
-  const chartData = [
-    { name: "Jan", uv: 4000, pv: 2400, amt: 2400 },
-    { name: "Feb", uv: 3000, pv: 1398, amt: 2210 },
-    { name: "Mar", uv: 2000, pv: 9800, amt: 2290 },
-    { name: "Apr", uv: 2780, pv: 3908, amt: 2000 },
-    { name: "May", uv: 1890, pv: 4800, amt: 2181 },
-    { name: "Jun", uv: 2390, pv: 3800, amt: 2500 },
-    { name: "Jul", uv: 3490, pv: 4300, amt: 2100 },
-  ];
+        // Process data for Overview and Revenue components
+        const processedData = result.map((booking) => ({
+          col1: booking.turf_name,
+          col2: booking.turf_price,
+        }));
 
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "Column 1",
-        accessor: "col1",
-      },
-      {
-        Header: "Column 2",
-        accessor: "col2",
-      },
-    ],
-    []
-  );
+        const processedChartData = result.map((booking) => ({
+          name: booking.turf_name,
+          revenue: booking.turf_price,
+        }));
+
+        setData(processedData);
+        setChartData(processedChartData);
+        setColumns([
+          {
+            Header: "Turf Name",
+            accessor: "col1",
+          },
+          {
+            Header: "Price",
+            accessor: "col2",
+          },
+        ]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       <Navbar />
-      <header className="bg-gray-800 text-white p-4 text-center">
-        <h1 className="text-2xl">Admin Dashboard</h1>
-      </header>
+      <header className="bg-gray-800 text-white p-4"></header>
+      <h1 className="bg-gray-800 text-2xl pt-2 pl-5">Admin Dashboard</h1>
       <div className="flex flex-1">
         <nav className="w-64 bg-gray-900 p-4">
           <ul>
@@ -96,7 +102,7 @@ const AdminDashboard = () => {
           )}
           {selectedSection === "users" && <Users />}
           {selectedSection === "revenue" && <Revenue chartData={chartData} />}
-          {selectedSection === "Bookings" && <Bookings/>}
+          {selectedSection === "Bookings" && <Bookings />}
         </main>
       </div>
     </div>

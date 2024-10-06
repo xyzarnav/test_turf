@@ -241,7 +241,7 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
 
 app.get("/admin/bookings", (req, res) => {
   const sql = `
-    SELECT bookings.*, turfs.name AS turf_name
+    SELECT bookings.*, turfs.name AS turf_name,turfs.price AS turf_price
     FROM bookings
     JOIN turfs ON bookings.turf_id = turfs.id
     ORDER BY bookings.created_at DESC

@@ -30,6 +30,8 @@ const Bookings = () => {
       try {
         const response = await axios.get("http://localhost:3001/admin/bookings"); // API endpoint
         setData(response.data);
+        console.log(response.data);
+        
         setPageCount(Math.ceil(response.data.length / itemsPerPage)); // Calculate total pages
       } catch (error) {
         console.error("Error fetching booking data:", error);
@@ -51,7 +53,7 @@ const Bookings = () => {
       },
       {
         Header: "Date",
-        accessor: "date", // The date of the booking
+        accessor: (row) => format(new Date(row.date), "yyyy-MM-dd"), // The date of the booking
       },
       {
         Header: "Time Slot",
@@ -76,6 +78,10 @@ const Bookings = () => {
       {
         Header: "Turf ID",
         accessor: "turf_id", // ID of the turf
+      },
+      {
+        Header: "Turf PRICE",
+        accessor: "turf_price", // I
       },
       {
         Header: "Created At",
