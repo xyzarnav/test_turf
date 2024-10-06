@@ -21,23 +21,30 @@ const BookingPage = () => {
   const [contact, setContact] = useState("");
   const [showContactDiv, setShowContactDiv] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(0);
 
+  useEffect(() => {
+    const storedUserId = localStorage.UserID;
+    if (storedUserId) {
+      setUserId(storedUserId);
+      fetchWalletBalance(storedUserId);
+    } else {
+      console.error("UserId not found in local storage.");
+    }
+  }, []);
 
-useEffect(() => {
-  console.log(localStorage);
-  
-  const storedUserId = localStorage.UserID;
-  console.log("Retrieved userId:", storedUserId); // Check the value of userId
-  if (storedUserId) {
-    setUserId(storedUserId);
-  } else {
-    console.error("UserId not found in local storage.");
-  }
-}, []);
+  const fetchWalletBalance = async (userId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/wallet/${userId}`
+      );
+      setWalletBalance(response.data.wallet_balance);
+    } catch (error) {
+      console.error("Error fetching wallet balance:", error);
+    }
+  };
 
-
-
-   const toastShownRef = useRef(false);
+  const toastShownRef = useRef(false);
 
   useEffect(() => {
     const turfId = localStorage.getItem("selectedTurfId");
@@ -84,16 +91,19 @@ useEffect(() => {
     }
   }, [playerFinder]);
 
-  const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     if (methodOfBooking !== "in_person" && !paymentProof) {
       console.error("Please select payment proof");
       return;
     }
-    console.log("cheking",userId);
-    
-
+  
+    if (walletBalance < turf.price) {
+      toast.error("Insufficient wallet balance to book the turf.");
+      return;
+    }
+  
     const formData = new FormData();
     formData.append("name", name);
     formData.append("date", date);
@@ -105,16 +115,22 @@ useEffect(() => {
     formData.append("player_finder", playerFinder);
     formData.append("contact", contact);
     formData.append("user_id", userId);
-    
-    // formData.append("user_id", id);
-
-
-    axios
-      .post("http://localhost:3001/bookings", formData)
-      .then((response) => {
-        console.log("Booking successful:", response.data);
-        setBookedSlots([...bookedSlots, parseInt(selectedTime)]);
-
+  
+    try {
+      const bookingResponse = await axios.post("http://localhost:3001/bookings", formData);
+      console.log("Booking successful:", bookingResponse.data);
+  
+      // Deduct balance after successful booking
+      try {
+        const deductResponse = await axios.post("http://localhost:3001/deduct-balance", {
+          userId: userId,
+          amount: turf.price
+        });
+        console.log("Balance deducted successfully:", deductResponse.data);
+  
+        // Update wallet balance in the state
+        setWalletBalance(walletBalance - turf.price);
+  
         // Reset form
         setName("");
         setEmail("");
@@ -126,8 +142,16 @@ useEffect(() => {
         setMethodOfBooking("online");
         setContact("");
         toast.success("Turf booked successfully!");
-      })
-      .catch((error) => console.error("Error making booking:", error));
+      } catch (deductError) {
+        console.error("Error deducting balance:", deductError);
+        toast.error("Booking successful, but failed to deduct balance.");
+      }
+  
+      setBookedSlots([...bookedSlots, parseInt(selectedTime)]);
+    } catch (bookingError) {
+      console.error("Error making booking:", bookingError);
+      toast.error("Failed to book the turf.");
+    }
   };
 
   const handlePaymentProofChange = (event) => {
@@ -209,19 +233,6 @@ useEffect(() => {
                 className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
-
-              {/* <label htmlFor="email" className="font-semibold">
-                Email:
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              /> */}
 
               <label htmlFor="date" className="font-semibold">
                 Date:

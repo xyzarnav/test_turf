@@ -53,8 +53,9 @@ app.get("/bookings/:userId", (req, res) => {
 app.get("/wallet/:userId", (req, res) => {
   const userId = req.params.userId;
 
-  const sql = "SELECT balance FROM wallet WHERE user_id = ?";
+  const sql = "SELECT balance FROM wallet WHERE id = ?";
 
+  // Ensure the database connection is correctly configured
   db.query(sql, [userId], (err, result) => {
     if (err) {
       console.error("Error fetching wallet balance:", err);
@@ -63,9 +64,15 @@ app.get("/wallet/:userId", (req, res) => {
     if (result.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
+
+    // Log the result for debugging
+    console.log("Wallet balance fetched successfully:---", result);
+
+    // Return the balance in the response
     return res.status(200).json({ wallet_balance: result[0].balance });
   });
 });
+
 
 db.getUserById = (userId, callback) => {
   const query = "SELECT * FROM userprofile WHERE UserID = ?";
@@ -285,7 +292,51 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
     return res.status(200).json({ message: "Booking added successfully" });
   });
 });
+app.post("/deduct-balance", (req, res) => {
+  const { userId, amount } = req.body;
 
+  const getBalanceSql = "SELECT balance FROM wallet WHERE id = ?";
+  db.query(getBalanceSql, [userId], (err, result) => {
+    if (err) {
+      console.error("Error fetching wallet balance:", err);
+      return res.status(500).json({ error: "Failed to fetch wallet balance" });
+    }
+    if (result.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const currentBalance = result[0].balance;
+    const newBalance = currentBalance - amount;
+
+    const updateBalanceSql = "UPDATE wallet SET balance = ? WHERE id = ?";
+    db.query(updateBalanceSql, [newBalance, userId], (err, updateResult) => {
+      if (err) {
+        console.error("Error updating wallet balance:", err);
+        return res
+          .status(500)
+          .json({ error: "Failed to update wallet balance" });
+      }
+      console.log("Balance deducted successfully:", updateResult);
+      res
+        .status(200)
+        .json({ message: "Balance deducted successfully", newBalance });
+    });
+  });
+});
+// server.js
+app.post('/deduct-wallet', (req, res) => {
+    const { userId, newBalance } = req.body;
+
+    const sql = 'UPDATE users SET wallet_balance = ? WHERE id = ?';
+
+    db.query(sql, [newBalance, userId], (err, result) => {
+        if (err) {
+            console.error('Error updating wallet balance:', err);
+            return res.status(500).json({ error: 'Failed to update wallet balance' });
+        }
+        return res.status(200).json({ message: 'Wallet balance updated successfully' });
+    });
+});
 
 app.get("/admin/bookings", (req, res) => {
   const sql = `
