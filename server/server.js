@@ -422,26 +422,27 @@ app.get("/turfs/:turfId/availability", (req, res) => {
 //   });
 // });
 
-app.get("/bookings/:date", (req, res) => {
+app.get("/booking/:date", (req, res) => {
   const selectedDate = req.params.date;
+  console.log("Fetching bookings for date:", selectedDate); // Log the date
 
   const query = `
-      SELECT bookings.*, turfs.name 
-      FROM bookings 
-      JOIN turfs ON bookings.turf_id = turfs.id 
-      WHERE bookings.date = ?
-    `;
+    SELECT bookings.*, turfs.name AS turfName 
+    FROM bookings 
+    JOIN turfs ON bookings.turf_id = turfs.id 
+    WHERE bookings.date = ?
+  `;
 
   db.query(query, [selectedDate], (err, results) => {
     if (err) {
       console.error("Error fetching bookings:", err);
       return res.status(500).json({ error: "Failed to fetch bookings" });
     }
-
-    // Return the bookings for the selected date
-    res.json(results);
+    console.log(results); // Log the results from the database
+    res.json(results); // Send the response
   });
 });
+
 
 // Fetch all turfs with sorting and filtering by area
 app.get("/turfs", (req, res) => {

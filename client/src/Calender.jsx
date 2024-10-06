@@ -27,7 +27,7 @@ const CalendarComponent = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3001/bookings/${formattedDate}`
+        `http://localhost:3001/booking/${formattedDate}`
       );
       setBookings(response.data);
       console.log(response.data);

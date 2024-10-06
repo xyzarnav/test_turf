@@ -56,13 +56,15 @@ const AddMoneyPage = () => {
       if (error) {
         setErrorMessage(error.message);
       } else if (paymentIntent.status === "succeeded") {
+         const userId = localStorage.getItem("UserID");
         toast.success("Payment successful!", { autoClose: 1000 });
 
         await fetch("http://localhost:3001/update-wallet", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+
           body: JSON.stringify({
-            user_id: 1, // Replace with actual user ID from your app's state
+            user_id: userId, 
             amount: wallet,
           }),
         });
