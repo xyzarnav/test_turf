@@ -44,6 +44,8 @@ CREATE TABLE bookings (
     turf_id INT NOT NULL,  -- Foreign key to the turf being booked
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     method_of_booking ENUM('online', 'in_person', 'combine') DEFAULT 'online',
+     user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES userprofile(UserID) ,
     FOREIGN KEY (turf_id) REFERENCES turfs(id)
 
 
