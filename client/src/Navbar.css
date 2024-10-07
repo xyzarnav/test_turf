@@ -2,14 +2,46 @@
   font-family: "montserrat";
 }
 
+:root {
+  --navbar-height: 80px;
+  --navbar-padding: 0 100px;
+  --navbar-bg-color: black;
+  --navbar-hover-bg-color: #333;
+  --navbar-focus-outline: 2px solid #fff;
+}
+
 #top-nav {
-  height: 80px;
+  height: var(--navbar-height);
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 100px;
-  position: fixed;
+  padding: var(--navbar-padding);
+  position: sticky;
   z-index: 99;
   gap: 100px;
+  background-color: var(--navbar-bg-color);
+  transition: background-color 0.3s ease;
+}
+
+#top-nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#top-nav a:hover {
+  background-color: var(--navbar-hover-bg-color);
+}
+
+#top-nav a:focus {
+  outline: var(--navbar-focus-outline);
+}
+
+@media (max-width: 768px) {
+  #top-nav {
+    padding: 0 20px;
+    gap: 20px;
+  }
 }

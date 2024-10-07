@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 
 const AdminSignup = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +12,8 @@ const AdminSignup = () => {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+    const navigate = useNavigate();
+
 
   // Handle input change
   const handleChange = (e) => {
@@ -30,10 +32,13 @@ const AdminSignup = () => {
         formData
       );
       setSuccess(response.data.message);
+      navigate("/");
       setError(""); // Clear error if successful
+
     } catch (err) {
       setError(err.response?.data?.error || "Failed to register admin");
       setSuccess(""); // Clear success message if there's an error
+      navigate("/");
     }
   };
 

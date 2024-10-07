@@ -121,30 +121,36 @@ const BookingPage = () => {
       console.log("Booking successful:", bookingResponse.data);
   
       // Deduct balance after successful booking
-      try {
-        const deductResponse = await axios.post("http://localhost:3001/deduct-balance", {
-          userId: userId,
-          amount: turf.price
-        });
-        console.log("Balance deducted successfully:", deductResponse.data);
-  
-        // Update wallet balance in the state
-        setWalletBalance(walletBalance - turf.price);
-  
-        // Reset form
-        setName("");
-        setEmail("");
-        setDate(moment().format("YYYY-MM-DD"));
-        setSelectedTime("");
-        setPaymentProof(null);
-        setNumberOfPeople(1);
-        setPlayerFinder(0);
-        setMethodOfBooking("online");
-        setContact("");
-        toast.success("Turf booked successfully!");
-      } catch (deductError) {
-        console.error("Error deducting balance:", deductError);
-        toast.error("Booking successful, but failed to deduct balance.");
+     
+     if (methodOfBooking !== "in_person"){
+       try {
+         const deductResponse = await axios.post(
+           "http://localhost:3001/deduct-balance",
+           {
+             userId: userId,
+             amount: turf.price,
+           }
+         );
+         console.log("Balance deducted successfully:", deductResponse.data);
+
+         // Update wallet balance in the state
+         setWalletBalance(walletBalance - turf.price);
+
+         // Reset form
+         setName("");
+         setEmail("");
+         setDate(moment().format("YYYY-MM-DD"));
+         setSelectedTime("");
+         setPaymentProof(null);
+         setNumberOfPeople(1);
+         setPlayerFinder(0);
+         setMethodOfBooking("online");
+         setContact("");
+         toast.success("Turf booked successfully!");
+       } catch (deductError) {
+         console.error("Error deducting balance:", deductError);
+         toast.error("Booking successful, but failed to deduct balance.");
+       }
       }
   
       setBookedSlots([...bookedSlots, parseInt(selectedTime)]);

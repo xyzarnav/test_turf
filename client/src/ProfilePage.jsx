@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import { BookOutlined, DollarOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
@@ -29,6 +30,7 @@ const ProfilePage = () => {
         }
         const data = await response.json();
         setUserData(data);
+        
       } catch (error) {
         setError(error.message);
       } finally {
@@ -73,6 +75,8 @@ const ProfilePage = () => {
     );
   }
 
+  const formattedDate = userData ? format(new Date(userData.DateOfBirth), 'MMMM dd, yyyy') : '';
+
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gray-50">
       <Navbar />
@@ -91,7 +95,7 @@ const ProfilePage = () => {
             </p>
             <p className="text-lg mb-4 text-gray-700">
               <strong className="font-semibold">Date of Birth:</strong>{" "}
-              {userData.DateOfBirth}
+              {formattedDate}
             </p>
             <p className="text-lg mb-4 text-gray-700">
               <strong className="font-semibold">Gender:</strong>{" "}
@@ -107,17 +111,13 @@ const ProfilePage = () => {
         )}
         <div className="flex justify-center space-x-4">
           <Link to="/view-bookings">
-            <button
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center"
-            >
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
               <BookOutlined className="mr-2" />
               View Bookings
             </button>
           </Link>
           <Link to="/Addmoney">
-            <button
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center"
-            >
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
               <DollarOutlined className="mr-2" />
               Add Money
             </button>

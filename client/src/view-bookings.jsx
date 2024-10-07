@@ -35,6 +35,8 @@ const ViewBookings = () => {
         }
         const data = await response.json();
         setBookingsData(data); // Set bookings data
+        console.log(data);
+        
       } catch (error) {
         setError(error.message);
         console.error("Fetch bookings data error:", error); // Log error for debugging
@@ -95,6 +97,10 @@ const ViewBookings = () => {
                 <p className="text-lg mb-4 text-gray-700">
                   <strong className="font-semibold">Method of Booking:</strong>{" "}
                   {booking.method_of_booking}
+                </p>
+                <p className="text-lg mb-4 text-gray-700">
+                  <strong className="font-semibold">Booking ID</strong>{" "}
+                  {booking.id}
                 </p>
               </div>
             ))

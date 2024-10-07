@@ -3,6 +3,7 @@ import axios from "axios";
 import "./AppTurf.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { toast } from "react-toastify";
 
 const AddTurf = () => {
   const [turfData, setTurfData] = useState({
@@ -34,7 +35,7 @@ const AddTurf = () => {
         "http://localhost:3001/addTurf",
         turfData
       );
-      alert("Turf added successfully:", response.data);
+      toast.success("Turf added successfully:", response.data);
 
       setTurfData({
         imageURL: "",

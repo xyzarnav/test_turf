@@ -292,6 +292,7 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
     return res.status(200).json({ message: "Booking added successfully" });
   });
 });
+
 app.post("/deduct-balance", (req, res) => {
   const { userId, amount } = req.body;
 
