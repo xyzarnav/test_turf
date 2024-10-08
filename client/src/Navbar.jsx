@@ -118,14 +118,15 @@ const Navbar = () => {
               </li>
             )}
           </ul>
-
-          <Link to="/profile" className="avatar-link">
-            <div className="avatar-container">
-              <Space size={16} wrap>
-                <Avatar icon={<UserOutlined />} />
-              </Space>
-            </div>
-          </Link>
+          {!isAdmin && (
+            <Link to="/profile" className="avatar-link">
+              <div className="avatar-container">
+                <Space size={16} wrap>
+                  <Avatar icon={<UserOutlined />} />
+                </Space>
+              </div>
+            </Link>
+          )}
 
           {/* Logout Button */}
           <button

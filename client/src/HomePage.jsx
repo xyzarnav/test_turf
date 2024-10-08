@@ -188,7 +188,7 @@ const HomePage = () => {
           <div class="card" id="card1">
             <img src={card2} />
             <div class="overlays">
-              <h4>Search</h4>
+              <h4>Calender</h4>
               <p>
                 lorem20lkmn knvndnvlnflkvnlkdrnvlknnvkndvlknvl,l vll fl l
                 lnfvlknlnvfknvlkdnvlkndvlkn
@@ -199,7 +199,7 @@ const HomePage = () => {
           <div class="card" id="card1">
             <img src={card2} />
             <div class="overlays">
-              <h4>Search</h4>
+              <h4>Wallet</h4>
               <p>
                 lorem20lkmn knvndnvlnflkvnlkdrnvlknnvkndvlknvl,l vll fl l
                 lnfvlknlnvfknvlkdnvlkndvlkn
