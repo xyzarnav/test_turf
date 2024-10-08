@@ -84,7 +84,7 @@ const LoginPage = () => {
     >
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 bg-opacity-90">
         <div className="flex justify-center mb-4">
-          <img src={logo} alt="Logo" className="h-16" /> {/* Update this line */}
+          <img src={logo} alt="Logo" className="h-20 object-contain" /> {/* Update this line */}
         </div>
         <div className="flex justify-between mb-4">
           <button

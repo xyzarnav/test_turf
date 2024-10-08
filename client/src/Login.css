@@ -36,10 +36,10 @@ img {
 }
 
 /* Slight hover effect to make the logo interactive */
-img:hover {
-  transform: scale(1.1); /* Slight zoom on hover */
-  opacity: 1; /* Remove transparency on hover */
-}
+/* img:hover {
+  transform: scale(1.1); 
+  opacity: 1; 
+}  */
 
 /* Make sure the logo scales down on smaller screens */
 @media (max-width: 768px) {
@@ -65,6 +65,7 @@ button {
 button:hover {
   background: linear-gradient(145deg, #483D8B, #372D6A); /* Darker hover effect */
   box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+  color: white;
 }
 
 .toggle-button {

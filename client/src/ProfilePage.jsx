@@ -85,7 +85,7 @@ const ProfilePage = () => {
           User Profile
         </h1>
         {userData && (
-          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 mb-8 transition-transform transform hover:scale-105">
+          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 mb-8 transition-transform transform ">
             <p className="text-lg mb-4 text-gray-700">
               <strong className="font-semibold">Name:</strong>{" "}
               {userData.FullName}
