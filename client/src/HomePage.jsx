@@ -157,7 +157,7 @@ const HomePage = () => {
             </div>
           </div>
           <div id="about-us-con">
-            <img src={page2left} />
+            <img src="https://i.pinimg.com/564x/2f/a9/ca/2fa9ca82c3654b092456002e15dd5f41.jpg" />
             <div id="about-us-in">
               <h3>ABOUT US</h3>
               <p>
@@ -169,40 +169,37 @@ const HomePage = () => {
                 #LetTheWorldPlay
               </p>
             </div>
-            <img src={page2left} />
+            <img src="https://i.pinimg.com/564x/7c/ff/ce/7cffce3d5a45d8a3e5e7eba2e0aef733.jpg" />
           </div>
         </div>
 
         <div id="card-container">
           <div class="card" id="card1">
-            <img src={card2} />
+            <img src="	https://i.pinimg.com/564x/4f/16/04/4f1604160bfd399bbce4113dcbbad1f6.jpg" />
             <div class="overlays">
               <h4>Search</h4>
+              <p>Quickly find players for your games, for better engagement.</p>
+            </div>
+          </div>
+
+          <div class="card" id="card1">
+            <img src="https://i.pinimg.com/564x/60/ee/22/60ee22f78c0318df91935fa8850784e3.jpg" />
+            <div class="overlays">
+              <h4>wallet</h4>
               <p>
-                lorem20lkmn knvndnvlnflkvnlkdrnvlknnvkndvlknvl,l vll fl l
-                lnfvlknlnvfknvlkdnvlkndvlkn
+                Manage digital assets, view balances, and handle transactions
+                securely within the app.
               </p>
             </div>
           </div>
 
           <div class="card" id="card1">
-            <img src={card2} />
+            <img src="https://cdn.dribbble.com/users/4874/screenshots/1792443/media/51432318d4acaf6e4a3b62d0f3d5ea70.gif" />
             <div class="overlays">
-              <h4>Search</h4>
+              <h4>Calender </h4>
               <p>
-                lorem20lkmn knvndnvlnflkvnlkdrnvlknnvkndvlknvl,l vll fl l
-                lnfvlknlnvfknvlkdnvlkndvlkn
-              </p>
-            </div>
-          </div>
-
-          <div class="card" id="card1">
-            <img src={card2} />
-            <div class="overlays">
-              <h4>Search</h4>
-              <p>
-                lorem20lkmn knvndnvlnflkvnlkdrnvlknnvkndvlknvl,l vll fl l
-                lnfvlknlnvfknvlkdnvlkndvlkn
+                Stay updated on upcoming events and matches, with reminders and
+                notifications for important dates.
               </p>
             </div>
           </div>

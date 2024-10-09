@@ -4,16 +4,19 @@ import Footer from "./Footer";
 import { useNavigate } from "react-router-dom";
 import { BookOutlined, DollarOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem("UserID");
+
       if (!userId) {
         setError("User ID not found in localStorage");
         setLoading(false);
@@ -27,9 +30,6 @@ const ProfilePage = () => {
         }
         const data = await response.json();
         setUserData(data);
-        // localStorage.setItem("UserId", data.id);
-        console.log(localStorage);
-        
       } catch (error) {
         setError(error.message);
       } finally {
@@ -38,6 +38,28 @@ const ProfilePage = () => {
     };
 
     fetchUserData();
+  }, []);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("UserID");
+
+    const fetchWalletBalance = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/wallet/${userId}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText);
+        }
+        const data = await response.json();
+        console.log("wallet is balnce:", data);
+        setWalletBalance(data.wallet_balance);
+      } catch (err) {
+        console.error("Error fetching wallet balance:", err);
+      }
+    };
+
+    if (userId) {
+      fetchWalletBalance();
+    }
   }, []);
 
   if (loading) {
@@ -52,9 +74,9 @@ const ProfilePage = () => {
     );
   }
 
-  const handleBookingsClick = () => {
-    navigate("/bookings");
-  };
+  const formattedDate = userData
+    ? format(new Date(userData.DateOfBirth), "MMMM dd, yyyy")
+    : "";
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gray-50">
@@ -64,7 +86,7 @@ const ProfilePage = () => {
           User Profile
         </h1>
         {userData && (
-          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 mb-8 transition-transform transform hover:scale-105">
+          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 mb-8 transition-transform transform ">
             <p className="text-lg mb-4 text-gray-700">
               <strong className="font-semibold">Name:</strong>{" "}
               {userData.FullName}
@@ -74,36 +96,33 @@ const ProfilePage = () => {
             </p>
             <p className="text-lg mb-4 text-gray-700">
               <strong className="font-semibold">Date of Birth:</strong>{" "}
-              {userData.DateOfBirth}
+              {formattedDate}
             </p>
             <p className="text-lg mb-4 text-gray-700">
               <strong className="font-semibold">Gender:</strong>{" "}
               {userData.Gender}
             </p>
-            <p className="text-lg mb-4 text-gray-700">
-              <strong className="font-semibold">Wallet:</strong>{" "}
-              {/* {userData.Gender} */}
-            </p>
+            <div>
+              <p className="text-lg mb-4 text-gray-700">
+                <strong className="font-semibold">Wallet:</strong>{" "}
+                {walletBalance !== null ? `₹${walletBalance}` : "Loading..."}
+              </p>
+            </div>
           </div>
         )}
         <div className="flex justify-center space-x-4">
           <Link to="/view-bookings">
-            <button
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center"
-              // onClick={handleBookingsClick}
-            >
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
               <BookOutlined className="mr-2" />
               View Bookings
             </button>
           </Link>
-          
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center"
-            // onClick={handleBookingsClick}
-          >
-            <DollarOutlined className="mr-2" />
-            Add Money
-          </button>
+          <Link to="/Addmoney">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
+              <DollarOutlined className="mr-2" />
+              Add Money
+            </button>
+          </Link>
         </div>
       </div>
       <Footer />
