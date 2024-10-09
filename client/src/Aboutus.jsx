@@ -126,20 +126,23 @@ const AboutUs = () => {
             <h2 className="about-journey-title">OUR JOURNEY</h2>
             <p className="about-journey-text">
               <b>
-                BookMyTurf was founded to address the challenges faced by sports
-                enthusiasts in finding and booking turfs efficiently...
+                <span>Our mission</span> is making it easier for everyone to
+                play sports and increasing the utilisation of facilities as a
+                result
               </b>
             </p>
             <p className="about-journey-text">
               <b>
                 Our journey led us to create a platform where turf booking is
-                simplified, fast, and enjoyable...
+                simplified, fast, and enjoyable.Sports play a pivotal role in
+                bringing people together, sharing moments and enhancing the
+                well-being are reasons that form the essence of PlaySpots.
               </b>
             </p>
             <p className="about-journey-text">
               <b>
-                Today, BookMyTurf stands as a trusted name in turf booking,
-                offering a user-friendly interface...
+                Today, <span>TurfIt </span>stands as a trusted name in turf
+                booking, offering a user-friendly interface
               </b>
             </p>
           </div>

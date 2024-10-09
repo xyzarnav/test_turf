@@ -1,72 +1,98 @@
 .footer {
-    background-color: #000;
-    color: #fff;
-    padding: 50px 0;
-  }
-  
-  .footer-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  .footer-section {
-    flex: 1;
-    margin-right: 20px;
-  }
-  
-  .footer-section h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  
-  .footer-section ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
+  background-color: black; /* Gray 800 */
+  color: white;
+  padding: 2rem 0;
+}
 
-  ul{
-    list-style-type: none;
-  }
-  
-  .footer-section ul li {
-    margin-bottom: 5px;
-  }
-  
-  .social-icons a {
-    color: #fff;
-    font-size: 24px;
-    margin-right: 10px;
-  }
-  
-  .newsletter input[type="email"] {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    width: calc(100% - 70px);
-  }
-  
-  .newsletter button {
-    padding: 10px 20px;
-    border-radius: 4px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .payment-methods {
-    margin-top: 20px;
-  }
-  
-  .payment-methods img {
-    width: 50px;
-    margin-right: 10px;
-  }
-  
-  .partners img {
-    width: 100px;
-    margin-right: 10px;
-  }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-section {
+  flex: 1; /* Allow sections to grow equally */
+  margin: 0 1rem;
+}
+.vertical-line {
+  width: 0.5px; /* Thickness of the vertical line */
+  background-color: white; /* Color of the line */
+  margin: 0 1rem; /* Space around the line */
+  height: 70px;
+  align-items: center;
+}
+.vertical-line-1 {
+  width: 0.5px; /* Thickness of the vertical line */
+  background-color: white; /* Color of the line */
+  margin: 0 1rem; /* Space around the line */
+  height: 180px;
+  align-items: center;
+}
+
+.footer-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.25rem;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: white;
+  transition: color 0.3s;
+}
+
+.icon:hover {
+  color: #4299e1; /* Blue 500 */
+}
+
+.subscribe {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.email-input {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #4a5568; /* Gray 700 */
+  color: white;
+  border: none;
+}
+
+.subscribe-button {
+  background-color: #3182ce; /* Blue 600 */
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.subscribe-button:hover {
+  background-color: #3182ce; /* Blue 500 */
+}
+
+.footer-bottom {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid #4a5568; /* Gray 700 */
+}
