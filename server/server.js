@@ -267,12 +267,19 @@ app.post("/bookings", upload.single("paymentProof"), (req, res) => {
   } = req.body;
   const paymentProof = req.file ? req.file.filename : null;
 
+  // Parse the date and set the time to midnight
+  const bookingDate = new Date(date);
+  bookingDate.setHours(0, 0, 0, 0);
+
+  // Format the date back to a string if necessary (e.g., for SQL)
+  const formattedDate = bookingDate.toISOString().split('T')[0];
+
   // Update the SQL query to include user_id
   const sql =
     "INSERT INTO bookings (name, date, time_slot, paymentProof, numberOfPeople, turf_id, method_of_booking, player_finder, contact, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     name,
-    date,
+    formattedDate, // Use the formatted date
     time_slot,
     paymentProof,
     numberOfPeople,

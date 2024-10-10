@@ -10,8 +10,10 @@
   background: #f0f0f0;
   border-radius: 8px;
   transition: background 0.3s ease;
-  height: 60px; /* Increase height for larger tiles */
-  width: 60px;  /* Set width for tiles */
+  height: 90px; /* Increase height for larger tiles */
+  width: 80px;  /* Set width for tiles */
+  padding: 0px;
+  margin: 0px;
 }
 
 .react-calendar__tile:enabled:hover,

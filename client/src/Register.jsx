@@ -14,7 +14,6 @@ import "react-toastify/dist/ReactToastify.css";
 // } from "@ant-design/icons";
 // import "antd/dist/antd.css";
 
-
 import Modal from "react-modal";
 
 import {
@@ -40,7 +39,44 @@ const RegisterPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [contact, setContact] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+    const [contactError, setContactError] = useState("");
+
+
+    const validateContact = (contact) => {
+      const regex = /^\d{10}$/;
+      if (!regex.test(contact)) {
+        setContactError("Contact number must be exactly 10 digits long.");
+      } else {
+        setContactError("");
+      }
+    };
+
+    const handleContactChange = (e) => {
+      const newContact = e.target.value;
+      setContact(newContact);
+      validateContact(newContact);
+    };
+
   const navigate = useNavigate();
+  const validatePassword = (password) => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!regex.test(password)) {
+      setPasswordError(
+        "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character."
+      );
+    } else {
+      setPasswordError("");
+    }
+  };
+
+   const handlePasswordChange = (e) => {
+     const newPassword = e.target.value;
+     setPassword(newPassword);
+     validatePassword(newPassword);
+   };
+
 
   const stripe = useStripe();
   const elements = useElements();
@@ -137,31 +173,37 @@ const RegisterPage = () => {
             required
           />
 
-          <label htmlFor="password">Contact</label>
-          <input
-            type="number"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-            placeholder="+91"
-            required
-          />
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div>
+            <label htmlFor="contact">Contact</label>
+            <input
+              type="number"
+              value={contact}
+              onChange={handleContactChange}
+              placeholder="+91"
+              required
+            />
+            {contactError && <p style={{ color: "red" }}>{contactError}</p>}
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
 
-          <label htmlFor="wallet">Wallet (Add Money)</label>
-          <input
-            type="number"
-            value={wallet}
-            onChange={(e) => setWallet(e.target.value)}
-            min="100"
-            step="10"
-            required
-          />
+            <label htmlFor="wallet">Wallet (Add Money)</label>
+            <input
+              type="number"
+              value={wallet}
+              onChange={(e) => setWallet(e.target.value)}
+              min="100"
+              step="10"
+              required
+            />
+          </div>
 
           <label htmlFor="dateOfBirth">Date of Birth</label>
           <input

@@ -61,13 +61,13 @@ const ViewBookings = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gray-50">
+    <div className="flex flex-col justify-between bg-gray-50 min-h-screen">
       <Navbar />
+      <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-8">
+        Your Bookings
+      </h1>
       <div className="container mx-auto p-6 sm:p-8">
-        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-8">
-          Your Bookings
-        </h1>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {bookingsData.length > 0 ? (
             bookingsData.map((booking) => (
               <div
@@ -90,10 +90,6 @@ const ViewBookings = () => {
                   <strong className="font-semibold">Number of People:</strong>{" "}
                   {booking.numberOfPeople}
                 </p>
-                {/* <p className="text-lg mb-4 text-gray-700">
-                  <strong className="font-semibold">Payment Proof:</strong>{" "}
-                  {booking.paymentProof ? "Uploaded" : "Not Uploaded"}
-                </p> */}
                 <p className="text-lg mb-4 text-gray-700">
                   <strong className="font-semibold">Method of Booking:</strong>{" "}
                   {booking.method_of_booking}
@@ -110,20 +106,20 @@ const ViewBookings = () => {
             </div>
           )}
         </div>
-        <div className="flex justify-center space-x-4 mt-8">
-          <Link to="/profile">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
-              <BookOutlined className="mr-2" />
-              Profile
-            </button>
-          </Link>
-          <Link to="/Addmoney">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
-              <DollarOutlined className="mr-2" />
-              Add Money
-            </button>
-          </Link>
-        </div>
+      </div>
+      <div className="flex justify-center space-x-4 mt-8">
+        <Link to="/profile">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
+            <BookOutlined className="mr-2" />
+            Profile
+          </button>
+        </Link>
+        <Link to="/Addmoney">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
+            <DollarOutlined className="mr-2" />
+            Add Money
+          </button>
+        </Link>
       </div>
       <Footer />
     </div>

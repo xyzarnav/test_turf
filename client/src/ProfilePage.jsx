@@ -85,7 +85,7 @@ const ProfilePage = () => {
           User Profile
         </h1>
         {userData && (
-          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 mb-8 transition-transform transform ">
+          <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 mb-8 transition-transform transform flex flex-col space-y-4">
             <p className="text-lg mb-4 text-gray-700">
               <strong className="font-semibold">Name:</strong>{" "}
               {userData.FullName}
@@ -109,7 +109,7 @@ const ProfilePage = () => {
             </div>
           </div>
         )}
-        <div className="flex justify-center space-x-4">
+        <div className="flex flex-col space-y-4 items-center">
           <Link to="/view-bookings">
             <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-200 ease-in-out flex items-center">
               <BookOutlined className="mr-2" />

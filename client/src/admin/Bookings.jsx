@@ -21,6 +21,7 @@ const GlobalFilter = ({ globalFilter, setGlobalFilter }) => {
 const Bookings = () => {
   const [data, setData] = useState([]);
   const [pageCount, setPageCount] = useState(0);
+   const [imageSrc, setImageSrc] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10; // Display 10 bookings at a time
 
@@ -31,7 +32,10 @@ const Bookings = () => {
         const response = await axios.get("http://localhost:3001/admin/bookings"); // API endpoint
         setData(response.data);
         console.log(response.data);
+        console.log('imageis ',data.paymentProof);
         
+       setImageSrc(`data:image/jpeg;base64,${data.paymentProof}`);
+
         setPageCount(Math.ceil(response.data.length / itemsPerPage)); // Calculate total pages
       } catch (error) {
         console.error("Error fetching booking data:", error);
@@ -59,18 +63,24 @@ const Bookings = () => {
         Header: "Time Slot",
         accessor: "time_slot", // The time slot of the booking
       },
-      {
-        Header: "Payment Proof",
-        accessor: "paymentProof", // Link or reference to payment proof
-        Cell: ({ value }) =>
-          value ? (
-            <a href={value} target="_blank" rel="noopener noreferrer">
-              View
-            </a>
-          ) : (
-            "N/A"
-          ), // Optional: Add link to proof if available
-      },
+      // {
+      //   Header: "Payment Proof",
+      //   accessor: "paymentProof", // Link or reference to payment proof
+
+      //   Cell: ({ value }) =>
+      //     value ? (
+      //       <a href={value} target="_blank" rel="noopener noreferrer">
+      //         <img
+      //           src={value}
+      //           alt="Payment Proof"
+      //           style={{ width: "100px", height: "auto" }}
+      //         />
+      //       </a>
+      //     ) : (
+      //       "N/A"
+      //     ), // Display the image if available
+      // },
+
       {
         Header: "Number of People",
         accessor: "numberOfPeople", // Number of people for the booking

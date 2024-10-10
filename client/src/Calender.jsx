@@ -28,7 +28,7 @@ const CalendarComponent = () => {
         `http://localhost:3001/booking/${formattedDate}`
       );
       setBookings(response.data);
-      console.log(response.data);
+      console.log('this is data',response.data);
     } catch (error) {
       console.error("Error fetching bookings:", error);
     } finally {
@@ -95,8 +95,8 @@ const CalendarComponent = () => {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Navbar />
 
-      <div className="flex-grow flex items-center justify-center p-6">
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full flex max-w-full">
+      <div className="flex-grow flex items-center justify-center p-2">
+        <div className="bg-white shadow-lg rounded-lg p-3 w-full flex max-w-full">
           <div className="flex-grow">
             <Calendar
               onChange={setValue}

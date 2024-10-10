@@ -33,40 +33,51 @@ const AdminDashboard = () => {
       <header className="bg-gray-800 text-white p-4"></header>
       <h1 className="bg-gray-800 text-2xl pt-2 pl-5">Admin Dashboard</h1>
       <div className="flex flex-1">
-        <nav className="w-64 bg-gray-900 p-4">
-          <ul>
-            <li className="mb-4">
+        <nav
+          className="w-64 bg-gray-900 p-4"
+          aria-label="Admin Dashboard Navigation"
+        >
+          <ul role="menu">
+            <li className="mb-4" role="none">
               <a
                 href="#overview"
                 className="text-gray-300 hover:text-white"
                 onClick={() => setSelectedSection("overview")}
+                role="menuitem"
+                tabIndex="0"
               >
                 Overview
               </a>
             </li>
-            <li className="mb-4">
+            <li className="mb-4" role="none">
               <a
                 href="#users"
                 className="text-gray-300 hover:text-white"
                 onClick={() => setSelectedSection("users")}
+                role="menuitem"
+                tabIndex="0"
               >
                 Users
               </a>
             </li>
-            <li className="mb-4">
+            <li className="mb-4" role="none">
               <a
                 href="#revenue"
                 className="text-gray-300 hover:text-white"
                 onClick={() => setSelectedSection("revenue")}
+                role="menuitem"
+                tabIndex="0"
               >
                 Revenue
               </a>
             </li>
-            <li className="mb-4">
+            <li className="mb-4" role="none">
               <a
                 href="#Bookings"
                 className="text-gray-300 hover:text-white"
                 onClick={() => setSelectedSection("Bookings")}
+                role="menuitem"
+                tabIndex="0"
               >
                 Bookings
               </a>

@@ -135,9 +135,7 @@ const LoginPage = () => {
               />
             </div>
             <div className="text-right">
-              <a href="#" className="text-blue-600 hover:underline">
-                Forgot password?
-              </a>
+              
             </div>
             <button
               type="submit"

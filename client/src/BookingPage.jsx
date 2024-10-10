@@ -94,12 +94,16 @@ const BookingPage = () => {
     const handleSubmit = async (event) => {
     event.preventDefault();
   
-    if (methodOfBooking !== "in_person" && !paymentProof) {
-      console.error("Please select payment proof");
-      return;
-    }
+    // if (!paymentProof) {
+    //   toast.error("Please select payment proof");
+    //   return;
+    // }
+    // if (methodOfBooking !== "in_person" && !paymentProof) {
+    //   console.error("Please select payment proof");
+    //   return;
+    // }
   
-    if (walletBalance < turf.price) {
+    if (methodOfBooking !== "in_person" && walletBalance < turf.price) {
       toast.error("Insufficient wallet balance to book the turf.");
       return;
     }
@@ -131,6 +135,7 @@ const BookingPage = () => {
              amount: turf.price,
            }
          );
+        toast.success("Turf booked successfully!");
          console.log("Balance deducted successfully:", deductResponse.data);
 
          // Update wallet balance in the state
@@ -146,7 +151,7 @@ const BookingPage = () => {
          setPlayerFinder(0);
          setMethodOfBooking("online");
          setContact("");
-         toast.success("Turf booked successfully!");
+        //  toast.success("Turf booked successfully!");
        } catch (deductError) {
          console.error("Error deducting balance:", deductError);
          toast.error("Booking successful, but failed to deduct balance.");
@@ -303,7 +308,7 @@ const BookingPage = () => {
                     In-Person
                   </label>
                 </div>
-                <div>
+                {/* <div>
                   <input
                     type="radio"
                     id="combine"
@@ -315,10 +320,10 @@ const BookingPage = () => {
                   <label htmlFor="combine" className="ml-2">
                     Combine
                   </label>
-                </div>
+                </div> */}
               </div>
 
-              <label htmlFor="paymentProof" className="font-semibold">
+              {/* <label htmlFor="paymentProof" className="font-semibold">
                 Identity Proof (Masked Adhar Card):
               </label>
               <input
@@ -329,7 +334,7 @@ const BookingPage = () => {
                 className="p-2 rounded border border-gray-300 bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required={methodOfBooking !== "in_person"}
                 accept="image/*"
-              />
+              /> */}
 
               <label htmlFor="numberOfPeople" className="font-semibold">
                 Number of People:

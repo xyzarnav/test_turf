@@ -39,26 +39,26 @@ const ContactUs = () => {
                 <div className="left-container">
                     <QuestionCircleFilled style={{ fontSize: '48px', marginBottom: '20px' }} /> {/* Icon */}
                     <h2 id='letstalk'>Let's Talk</h2> {/* Heading */}
-                    <p> <a href='#'>bookmyturf@gmail.com</a></p> {/* Gmail Address */}
+                    <p> <a href='#'>turff_it@gmail.com</a></p> {/* Gmail Address */}
                     <p>Vivekanand College of Engineering</p> {/* Physical Address */}
                     <p>+9090909090</p>
                 </div>
-                <div className="right-container">
-                    <form onSubmit={handleSubmit} className="contact-form">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter your name" value={formData.name} onChange={handleChange} required />
-
-                        <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} required />
-
-                        <label htmlFor="mobile">Mobile</label>
-                        <input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number" value={formData.mobile} onChange={handleChange} required />
-
-                        <label htmlFor="message">Message</label>
-                        <textarea id="message" name="message" placeholder="Enter your message" value={formData.message} onChange={handleChange} required></textarea>
-
-                        <button type="submit" className="send-button">Send</button>
-                    </form>
+                                <div className="right-container">
+                  <form onSubmit={handleSubmit} className="contact-form">
+                    <label htmlFor="name" className="text-white font-bold">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" value={formData.name} onChange={handleChange} required />
+                
+                    <label htmlFor="email" className="text-white font-bold">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" value={formData.email} onChange={handleChange} required />
+                
+                    <label htmlFor="mobile" className="text-white font-bold">Mobile</label>
+                    <input type="text" id="mobile" name="mobile" placeholder="Enter your mobile number" value={formData.mobile} onChange={handleChange} required />
+                
+                    <label htmlFor="message" className="text-white font-bold">Message</label>
+                    <textarea id="message" name="message" placeholder="Enter your message" value={formData.message} onChange={handleChange} required></textarea>
+                
+                    <button type="submit" className="send-button">Send</button>
+                  </form>
                 </div>
             </div>
             <Footer />
